@@ -1,28 +1,54 @@
 {
   "models": [
     {
-      "id": "gpt4-turbo",
-      "name": "GPT-4 Turbo",
-      "provider": "OpenAI",
-      "release_date": "2023-11-06",
-      "parameters": "GPT-4 scale",
-      "context_window": 128000,
+      "id": "claude-opus-4",
+      "name": "Claude Opus 4",
+      "provider": "Anthropic",
+      "release_date": "2024-11-01",
+      "parameters": "Unknown",
+      "context_window": 200000,
       "benchmarks": {
-        "MMLU": 86.4,
-        "HumanEval": 87.0,
-        "MATH": 52.9,
-        "GSM8K": 92.0,
-        "HellaSwag": 95.3,
-        "ARC": 96.3,
-        "TruthfulQA": 78.0
+        "MMLU": 88.3,
+        "HumanEval": 92.7,
+        "MATH": 78.3,
+        "GSM8K": 96.4,
+        "HellaSwag": 96.1,
+        "ARC": 97.2,
+        "TruthfulQA": 85.2,
+        "GPQA": 65.4
       },
       "pricing": {
-        "input": 10.0,
-        "output": 30.0,
+        "input": 15.0,
+        "output": 75.0,
         "currency": "USD"
       },
-      "description": "Most capable GPT-4 model with improved instruction following and JSON mode",
-      "tags": ["reasoning", "coding", "multimodal"]
+      "description": "Most capable Claude model with breakthrough reasoning and coding abilities",
+      "tags": ["reasoning", "coding", "analysis", "flagship"]
+    },
+    {
+      "id": "claude-sonnet-3.5",
+      "name": "Claude 3.5 Sonnet",
+      "provider": "Anthropic",
+      "release_date": "2024-06-20",
+      "parameters": "Unknown",
+      "context_window": 200000,
+      "benchmarks": {
+        "MMLU": 88.7,
+        "HumanEval": 92.0,
+        "MATH": 71.1,
+        "GSM8K": 96.4,
+        "HellaSwag": 95.0,
+        "ARC": 96.7,
+        "TruthfulQA": 81.4,
+        "GPQA": 59.4
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 15.0,
+        "currency": "USD"
+      },
+      "description": "Best balance of intelligence and speed, excels at coding and nuanced tasks",
+      "tags": ["balanced", "coding", "long-context", "popular"]
     },
     {
       "id": "claude-3-opus",
@@ -38,87 +64,16 @@
         "GSM8K": 95.0,
         "HellaSwag": 95.4,
         "ARC": 96.4,
-        "TruthfulQA": 82.0
+        "TruthfulQA": 82.0,
+        "GPQA": 50.4
       },
       "pricing": {
         "input": 15.0,
         "output": 75.0,
         "currency": "USD"
       },
-      "description": "Most intelligent Claude model with strong reasoning and analysis capabilities",
+      "description": "Most intelligent Claude 3 model with strong reasoning and analysis",
       "tags": ["reasoning", "analysis", "long-context"]
-    },
-    {
-      "id": "gemini-pro-1.5",
-      "name": "Gemini Pro 1.5",
-      "provider": "Google",
-      "release_date": "2024-02-15",
-      "parameters": "Unknown",
-      "context_window": 1000000,
-      "benchmarks": {
-        "MMLU": 85.9,
-        "HumanEval": 71.9,
-        "MATH": 58.5,
-        "GSM8K": 91.7,
-        "HellaSwag": 92.5,
-        "ARC": 95.2,
-        "TruthfulQA": 76.5
-      },
-      "pricing": {
-        "input": 7.0,
-        "output": 21.0,
-        "currency": "USD"
-      },
-      "description": "Long-context multimodal model with 1M token context window",
-      "tags": ["multimodal", "long-context", "reasoning"]
-    },
-    {
-      "id": "llama-3-70b",
-      "name": "Llama 3 70B",
-      "provider": "Meta",
-      "release_date": "2024-04-18",
-      "parameters": "70B",
-      "context_window": 8192,
-      "benchmarks": {
-        "MMLU": 82.0,
-        "HumanEval": 81.7,
-        "MATH": 50.4,
-        "GSM8K": 93.0,
-        "HellaSwag": 89.0,
-        "ARC": 93.0,
-        "TruthfulQA": 63.2
-      },
-      "pricing": {
-        "input": 0.9,
-        "output": 0.9,
-        "currency": "USD"
-      },
-      "description": "Open-source model with strong performance across many benchmarks",
-      "tags": ["open-source", "reasoning", "coding"]
-    },
-    {
-      "id": "mistral-large",
-      "name": "Mistral Large",
-      "provider": "Mistral AI",
-      "release_date": "2024-02-26",
-      "parameters": "Unknown",
-      "context_window": 32768,
-      "benchmarks": {
-        "MMLU": 81.2,
-        "HumanEval": 77.8,
-        "MATH": 45.0,
-        "GSM8K": 88.5,
-        "HellaSwag": 88.6,
-        "ARC": 92.8,
-        "TruthfulQA": 68.0
-      },
-      "pricing": {
-        "input": 8.0,
-        "output": 24.0,
-        "currency": "USD"
-      },
-      "description": "Flagship model from Mistral with multilingual capabilities",
-      "tags": ["multilingual", "reasoning", "coding"]
     },
     {
       "id": "claude-3-sonnet",
@@ -134,7 +89,8 @@
         "GSM8K": 92.3,
         "HellaSwag": 89.0,
         "ARC": 94.0,
-        "TruthfulQA": 75.0
+        "TruthfulQA": 75.0,
+        "GPQA": 38.9
       },
       "pricing": {
         "input": 3.0,
@@ -143,102 +99,6 @@
       },
       "description": "Balanced Claude model offering strong performance at lower cost",
       "tags": ["balanced", "long-context", "reasoning"]
-    },
-    {
-      "id": "gpt-3.5-turbo",
-      "name": "GPT-3.5 Turbo",
-      "provider": "OpenAI",
-      "release_date": "2023-03-01",
-      "parameters": "20B",
-      "context_window": 16385,
-      "benchmarks": {
-        "MMLU": 70.0,
-        "HumanEval": 48.1,
-        "MATH": 34.1,
-        "GSM8K": 57.1,
-        "HellaSwag": 85.5,
-        "ARC": 85.2,
-        "TruthfulQA": 47.0
-      },
-      "pricing": {
-        "input": 0.5,
-        "output": 1.5,
-        "currency": "USD"
-      },
-      "description": "Fast and affordable model for most conversational tasks",
-      "tags": ["fast", "affordable", "general-purpose"]
-    },
-    {
-      "id": "command-r-plus",
-      "name": "Command R+",
-      "provider": "Cohere",
-      "release_date": "2024-04-04",
-      "parameters": "104B",
-      "context_window": 128000,
-      "benchmarks": {
-        "MMLU": 75.0,
-        "HumanEval": 70.0,
-        "MATH": 40.0,
-        "GSM8K": 85.7,
-        "HellaSwag": 87.0,
-        "ARC": 90.0,
-        "TruthfulQA": 65.0
-      },
-      "pricing": {
-        "input": 3.0,
-        "output": 15.0,
-        "currency": "USD"
-      },
-      "description": "Enterprise-focused model with strong RAG capabilities",
-      "tags": ["enterprise", "RAG", "multilingual"]
-    },
-    {
-      "id": "mixtral-8x7b",
-      "name": "Mixtral 8x7B",
-      "provider": "Mistral AI",
-      "release_date": "2023-12-11",
-      "parameters": "8x7B MoE",
-      "context_window": 32768,
-      "benchmarks": {
-        "MMLU": 70.6,
-        "HumanEval": 40.2,
-        "MATH": 28.4,
-        "GSM8K": 74.4,
-        "HellaSwag": 86.7,
-        "ARC": 88.6,
-        "TruthfulQA": 60.1
-      },
-      "pricing": {
-        "input": 0.7,
-        "output": 0.7,
-        "currency": "USD"
-      },
-      "description": "Sparse mixture of experts model with excellent efficiency",
-      "tags": ["open-source", "MoE", "efficient"]
-    },
-    {
-      "id": "llama-3-8b",
-      "name": "Llama 3 8B",
-      "provider": "Meta",
-      "release_date": "2024-04-18",
-      "parameters": "8B",
-      "context_window": 8192,
-      "benchmarks": {
-        "MMLU": 68.4,
-        "HumanEval": 62.2,
-        "MATH": 30.0,
-        "GSM8K": 79.6,
-        "HellaSwag": 82.6,
-        "ARC": 83.4,
-        "TruthfulQA": 51.0
-      },
-      "pricing": {
-        "input": 0.2,
-        "output": 0.2,
-        "currency": "USD"
-      },
-      "description": "Efficient open-source model suitable for edge deployment",
-      "tags": ["open-source", "efficient", "edge"]
     },
     {
       "id": "claude-3-haiku",
@@ -254,7 +114,8 @@
         "GSM8K": 88.9,
         "HellaSwag": 86.8,
         "ARC": 92.4,
-        "TruthfulQA": 70.0
+        "TruthfulQA": 70.0,
+        "GPQA": 33.3
       },
       "pricing": {
         "input": 0.25,
@@ -265,7 +126,182 @@
       "tags": ["fast", "affordable", "long-context"]
     },
     {
-      "id": "gemini-flash",
+      "id": "gpt-4o",
+      "name": "GPT-4o",
+      "provider": "OpenAI",
+      "release_date": "2024-05-13",
+      "parameters": "Unknown",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 88.7,
+        "HumanEval": 90.2,
+        "MATH": 76.6,
+        "GSM8K": 95.8,
+        "HellaSwag": 95.3,
+        "ARC": 96.7,
+        "TruthfulQA": 80.2,
+        "GPQA": 53.6
+      },
+      "pricing": {
+        "input": 5.0,
+        "output": 15.0,
+        "currency": "USD"
+      },
+      "description": "Flagship multimodal model with vision, faster and cheaper than GPT-4 Turbo",
+      "tags": ["multimodal", "vision", "reasoning", "popular"]
+    },
+    {
+      "id": "o1",
+      "name": "o1",
+      "provider": "OpenAI",
+      "release_date": "2024-12-05",
+      "parameters": "Unknown",
+      "context_window": 200000,
+      "benchmarks": {
+        "MMLU": 92.3,
+        "HumanEval": 92.0,
+        "MATH": 94.8,
+        "GSM8K": 97.5,
+        "HellaSwag": 94.5,
+        "ARC": 97.8,
+        "TruthfulQA": 85.0,
+        "GPQA": 78.3
+      },
+      "pricing": {
+        "input": 15.0,
+        "output": 60.0,
+        "currency": "USD"
+      },
+      "description": "Reasoning model with extended thinking time for complex problems",
+      "tags": ["reasoning", "STEM", "coding", "research"]
+    },
+    {
+      "id": "o1-mini",
+      "name": "o1-mini",
+      "provider": "OpenAI",
+      "release_date": "2024-09-12",
+      "parameters": "Unknown",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 85.2,
+        "HumanEval": 87.2,
+        "MATH": 90.0,
+        "GSM8K": 95.2,
+        "HellaSwag": 91.0,
+        "ARC": 95.5,
+        "TruthfulQA": 78.0,
+        "GPQA": 60.0
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 12.0,
+        "currency": "USD"
+      },
+      "description": "Faster, more affordable reasoning model focused on STEM",
+      "tags": ["reasoning", "STEM", "coding", "efficient"]
+    },
+    {
+      "id": "gpt4-turbo",
+      "name": "GPT-4 Turbo",
+      "provider": "OpenAI",
+      "release_date": "2023-11-06",
+      "parameters": "Unknown",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 86.4,
+        "HumanEval": 87.0,
+        "MATH": 52.9,
+        "GSM8K": 92.0,
+        "HellaSwag": 95.3,
+        "ARC": 96.3,
+        "TruthfulQA": 78.0,
+        "GPQA": 49.5
+      },
+      "pricing": {
+        "input": 10.0,
+        "output": 30.0,
+        "currency": "USD"
+      },
+      "description": "Most capable GPT-4 model with improved instruction following",
+      "tags": ["reasoning", "coding", "multimodal"]
+    },
+    {
+      "id": "gpt-3.5-turbo",
+      "name": "GPT-3.5 Turbo",
+      "provider": "OpenAI",
+      "release_date": "2023-03-01",
+      "parameters": "20B",
+      "context_window": 16385,
+      "benchmarks": {
+        "MMLU": 70.0,
+        "HumanEval": 48.1,
+        "MATH": 34.1,
+        "GSM8K": 57.1,
+        "HellaSwag": 85.5,
+        "ARC": 85.2,
+        "TruthfulQA": 47.0,
+        "GPQA": 28.0
+      },
+      "pricing": {
+        "input": 0.5,
+        "output": 1.5,
+        "currency": "USD"
+      },
+      "description": "Fast and affordable model for most conversational tasks",
+      "tags": ["fast", "affordable", "general-purpose"]
+    },
+    {
+      "id": "gemini-ultra",
+      "name": "Gemini Ultra 1.5",
+      "provider": "Google",
+      "release_date": "2024-12-11",
+      "parameters": "Unknown",
+      "context_window": 2000000,
+      "benchmarks": {
+        "MMLU": 90.0,
+        "HumanEval": 85.9,
+        "MATH": 73.5,
+        "GSM8K": 94.2,
+        "HellaSwag": 94.6,
+        "ARC": 96.9,
+        "TruthfulQA": 82.8,
+        "GPQA": 59.4
+      },
+      "pricing": {
+        "input": 12.5,
+        "output": 50.0,
+        "currency": "USD"
+      },
+      "description": "Most capable Gemini model with 2M token context window",
+      "tags": ["multimodal", "long-context", "reasoning", "flagship"]
+    },
+    {
+      "id": "gemini-pro-1.5",
+      "name": "Gemini Pro 1.5",
+      "provider": "Google",
+      "release_date": "2024-02-15",
+      "parameters": "Unknown",
+      "context_window": 2000000,
+      "benchmarks": {
+        "MMLU": 85.9,
+        "HumanEval": 71.9,
+        "MATH": 58.5,
+        "GSM8K": 91.7,
+        "HellaSwag": 92.5,
+        "ARC": 95.2,
+        "TruthfulQA": 76.5,
+        "GPQA": 48.9
+      },
+      "pricing": {
+        "input": 1.25,
+        "output": 5.0,
+        "currency": "USD"
+      },
+      "description": "Long-context multimodal model with 2M token context window",
+      "tags": ["multimodal", "long-context", "reasoning"]
+    },
+    {
+      "id": "gemini-flash-1.5",
       "name": "Gemini 1.5 Flash",
       "provider": "Google",
       "release_date": "2024-05-14",
@@ -278,40 +314,317 @@
         "GSM8K": 86.5,
         "HellaSwag": 86.7,
         "ARC": 92.0,
-        "TruthfulQA": 72.0
+        "TruthfulQA": 72.0,
+        "GPQA": 43.4
       },
       "pricing": {
-        "input": 0.35,
-        "output": 1.05,
+        "input": 0.075,
+        "output": 0.30,
         "currency": "USD"
       },
-      "description": "Fast and efficient model with massive context window",
-      "tags": ["fast", "long-context", "multimodal"]
+      "description": "Fast and efficient model with massive 1M context window",
+      "tags": ["fast", "long-context", "multimodal", "affordable"]
     },
     {
-      "id": "phi-3-medium",
-      "name": "Phi-3 Medium",
-      "provider": "Microsoft",
-      "release_date": "2024-05-21",
-      "parameters": "14B",
+      "id": "gemini-flash-2.0",
+      "name": "Gemini 2.0 Flash",
+      "provider": "Google",
+      "release_date": "2024-12-11",
+      "parameters": "Unknown",
+      "context_window": 1000000,
+      "benchmarks": {
+        "MMLU": 84.2,
+        "HumanEval": 81.5,
+        "MATH": 63.9,
+        "GSM8K": 92.5,
+        "HellaSwag": 90.8,
+        "ARC": 94.3,
+        "TruthfulQA": 78.6,
+        "GPQA": 51.1
+      },
+      "pricing": {
+        "input": 0.10,
+        "output": 0.40,
+        "currency": "USD"
+      },
+      "description": "Next-gen Flash with improved reasoning and multimodal capabilities",
+      "tags": ["fast", "long-context", "multimodal", "latest"]
+    },
+    {
+      "id": "llama-3.3-70b",
+      "name": "Llama 3.3 70B",
+      "provider": "Meta",
+      "release_date": "2024-12-06",
+      "parameters": "70B",
       "context_window": 128000,
       "benchmarks": {
-        "MMLU": 78.0,
-        "HumanEval": 62.5,
-        "MATH": 48.0,
-        "GSM8K": 91.0,
-        "HellaSwag": 83.0,
-        "ARC": 91.6,
-        "TruthfulQA": 68.1
+        "MMLU": 86.0,
+        "HumanEval": 88.4,
+        "MATH": 68.0,
+        "GSM8K": 93.8,
+        "HellaSwag": 91.8,
+        "ARC": 94.8,
+        "TruthfulQA": 67.4,
+        "GPQA": 46.7
       },
       "pricing": {
         "input": 0.0,
         "output": 0.0,
         "currency": "USD"
       },
-      "description": "Efficient small language model optimized for reasoning",
-      "tags": ["open-source", "efficient", "reasoning"]
+      "description": "Latest Llama model with strong reasoning and instruction following",
+      "tags": ["open-source", "reasoning", "coding", "latest"]
+    },
+    {
+      "id": "llama-3.1-405b",
+      "name": "Llama 3.1 405B",
+      "provider": "Meta",
+      "release_date": "2024-07-23",
+      "parameters": "405B",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 88.6,
+        "HumanEval": 89.0,
+        "MATH": 73.8,
+        "GSM8K": 96.8,
+        "HellaSwag": 93.5,
+        "ARC": 96.1,
+        "TruthfulQA": 69.5,
+        "GPQA": 51.1
+      },
+      "pricing": {
+        "input": 0.0,
+        "output": 0.0,
+        "currency": "USD"
+      },
+      "description": "Largest open-source model with near frontier-level performance",
+      "tags": ["open-source", "reasoning", "coding", "flagship"]
+    },
+    {
+      "id": "llama-3-70b",
+      "name": "Llama 3 70B",
+      "provider": "Meta",
+      "release_date": "2024-04-18",
+      "parameters": "70B",
+      "context_window": 8192,
+      "benchmarks": {
+        "MMLU": 82.0,
+        "HumanEval": 81.7,
+        "MATH": 50.4,
+        "GSM8K": 93.0,
+        "HellaSwag": 89.0,
+        "ARC": 93.0,
+        "TruthfulQA": 63.2,
+        "GPQA": 39.5
+      },
+      "pricing": {
+        "input": 0.0,
+        "output": 0.0,
+        "currency": "USD"
+      },
+      "description": "Strong open-source model with broad capability",
+      "tags": ["open-source", "reasoning", "coding"]
+    },
+    {
+      "id": "deepseek-v3",
+      "name": "DeepSeek V3",
+      "provider": "DeepSeek",
+      "release_date": "2024-12-26",
+      "parameters": "671B (MoE, 37B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 88.5,
+        "HumanEval": 92.6,
+        "MATH": 90.2,
+        "GSM8K": 96.4,
+        "HellaSwag": 92.3,
+        "ARC": 95.6,
+        "TruthfulQA": 71.5,
+        "GPQA": 59.1
+      },
+      "pricing": {
+        "input": 0.27,
+        "output": 1.10,
+        "currency": "USD"
+      },
+      "description": "Breakthrough MoE model rivaling GPT-4o at fraction of the cost",
+      "tags": ["MoE", "coding", "reasoning", "efficient", "latest"]
+    },
+    {
+      "id": "deepseek-coder-v2",
+      "name": "DeepSeek Coder V2",
+      "provider": "DeepSeek",
+      "release_date": "2024-06-17",
+      "parameters": "236B (MoE, 21B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 78.0,
+        "HumanEval": 90.2,
+        "MATH": 75.7,
+        "GSM8K": 92.2,
+        "HellaSwag": 87.4,
+        "ARC": 90.8,
+        "TruthfulQA": 65.0,
+        "GPQA": 42.3
+      },
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28,
+        "currency": "USD"
+      },
+      "description": "Specialized coding model with exceptional code generation",
+      "tags": ["coding", "MoE", "specialized", "open-source"]
+    },
+    {
+      "id": "qwen-2.5-72b",
+      "name": "Qwen 2.5 72B",
+      "provider": "Alibaba",
+      "release_date": "2024-09-19",
+      "parameters": "72B",
+      "context_window": 131072,
+      "benchmarks": {
+        "MMLU": 85.3,
+        "HumanEval": 86.0,
+        "MATH": 75.5,
+        "GSM8K": 95.8,
+        "HellaSwag": 90.2,
+        "ARC": 94.7,
+        "TruthfulQA": 68.7,
+        "GPQA": 49.0
+      },
+      "pricing": {
+        "input": 0.35,
+        "output": 0.35,
+        "currency": "USD"
+      },
+      "description": "Advanced multilingual model with strong coding and reasoning",
+      "tags": ["multilingual", "coding", "reasoning", "open-source"]
+    },
+    {
+      "id": "qwen-2.5-coder-32b",
+      "name": "Qwen 2.5 Coder 32B",
+      "provider": "Alibaba",
+      "release_date": "2024-11-12",
+      "parameters": "32B",
+      "context_window": 131072,
+      "benchmarks": {
+        "MMLU": 75.0,
+        "HumanEval": 92.7,
+        "MATH": 70.0,
+        "GSM8K": 90.0,
+        "HellaSwag": 85.5,
+        "ARC": 89.2,
+        "TruthfulQA": 62.0,
+        "GPQA": 38.5
+      },
+      "pricing": {
+        "input": 0.0,
+        "output": 0.0,
+        "currency": "USD"
+      },
+      "description": "Specialized coding model competing with GPT-4 on code tasks",
+      "tags": ["coding", "specialized", "open-source", "multilingual"]
+    },
+    {
+      "id": "mistral-large-2",
+      "name": "Mistral Large 2",
+      "provider": "Mistral AI",
+      "release_date": "2024-07-24",
+      "parameters": "123B",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 84.0,
+        "HumanEval": 92.0,
+        "MATH": 73.0,
+        "GSM8K": 93.0,
+        "HellaSwag": 89.2,
+        "ARC": 94.0,
+        "TruthfulQA": 72.4,
+        "GPQA": 54.0
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 9.0,
+        "currency": "USD"
+      },
+      "description": "Flagship model with 128k context and strong coding abilities",
+      "tags": ["reasoning", "coding", "multilingual", "flagship"]
+    },
+    {
+      "id": "mistral-large",
+      "name": "Mistral Large",
+      "provider": "Mistral AI",
+      "release_date": "2024-02-26",
+      "parameters": "Unknown",
+      "context_window": 32768,
+      "benchmarks": {
+        "MMLU": 81.2,
+        "HumanEval": 77.8,
+        "MATH": 45.0,
+        "GSM8K": 88.5,
+        "HellaSwag": 88.6,
+        "ARC": 92.8,
+        "TruthfulQA": 68.0,
+        "GPQA": 40.2
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 9.0,
+        "currency": "USD"
+      },
+      "description": "First-generation flagship with multilingual capabilities",
+      "tags": ["multilingual", "reasoning", "coding"]
+    },
+    {
+      "id": "mixtral-8x22b",
+      "name": "Mixtral 8x22B",
+      "provider": "Mistral AI",
+      "release_date": "2024-04-17",
+      "parameters": "8x22B MoE (39B active)",
+      "context_window": 64000,
+      "benchmarks": {
+        "MMLU": 77.8,
+        "HumanEval": 75.0,
+        "MATH": 41.8,
+        "GSM8K": 88.4,
+        "HellaSwag": 88.6,
+        "ARC": 91.2,
+        "TruthfulQA": 64.0,
+        "GPQA": 36.6
+      },
+      "pricing": {
+        "input": 2.0,
+        "output": 6.0,
+        "currency": "USD"
+      },
+      "description": "Large MoE model with strong performance per active parameter",
+      "tags": ["open-source", "MoE", "efficient", "multilingual"]
+    },
+    {
+      "id": "mixtral-8x7b",
+      "name": "Mixtral 8x7B",
+      "provider": "Mistral AI",
+      "release_date": "2023-12-11",
+      "parameters": "8x7B MoE (12.9B active)",
+      "context_window": 32768,
+      "benchmarks": {
+        "MMLU": 70.6,
+        "HumanEval": 40.2,
+        "MATH": 28.4,
+        "GSM8K": 74.4,
+        "HellaSwag": 86.7,
+        "ARC": 88.6,
+        "TruthfulQA": 60.1,
+        "GPQA": 30.4
+      },
+      "pricing": {
+        "input": 0.7,
+        "output": 0.7,
+        "currency": "USD"
+      },
+      "description": "Efficient MoE model with excellent cost-performance ratio",
+      "tags": ["open-source", "MoE", "efficient", "multilingual"]
     }
   ],
-  "lastUpdated": "2024-05-25"
+  "lastUpdated": "2026-01-15"
 }

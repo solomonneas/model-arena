@@ -3,6 +3,7 @@ export interface ModelBenchmarks {
   HumanEval: number;
   MATH: number;
   GSM8K: number;
+  GPQA: number;
   HellaSwag: number;
   ARC: number;
   TruthfulQA: number;
