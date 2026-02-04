@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import RadarView from './pages/RadarView'
 import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
+import ComparisonView from './pages/ComparisonView'
 
 function App() {
   return (
@@ -65,6 +66,18 @@ function App() {
                   >
                     Scatter Plot
                   </NavLink>
+                  <NavLink
+                    to="/comparison"
+                    className={({ isActive }) =>
+                      `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                        isActive
+                          ? 'bg-primary-100 text-primary-700'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`
+                    }
+                  >
+                    Comparison Table
+                  </NavLink>
                 </div>
               </div>
             </div>
@@ -78,6 +91,7 @@ function App() {
             <Route path="/radar" element={<RadarView />} />
             <Route path="/timeline" element={<TimelineView />} />
             <Route path="/scatter" element={<ScatterView />} />
+            <Route path="/comparison" element={<ComparisonView />} />
           </Routes>
         </main>
 
