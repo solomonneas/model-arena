@@ -1,94 +1,84 @@
 import { Routes, Route, NavLink, Link } from 'react-router-dom'
-import Home from '@/pages/Home'
-import RadarView from '@/pages/RadarView'
-import TimelineView from '@/pages/TimelineView'
-import ScatterView from '@/pages/ScatterView'
-import ComparisonView from '@/pages/ComparisonView'
+import Home from './pages/Home'
+import RadarView from './pages/RadarView'
+import TimelineView from './pages/TimelineView'
+import ScatterView from './pages/ScatterView'
+import ComparisonView from './pages/ComparisonView'
+import './styles.css'
+
+const navItems = [
+  { to: '/3', label: 'Home', end: true },
+  { to: '/3/comparison', label: 'Compendium', end: false },
+  { to: '/3/radar', label: 'Radar', end: false },
+  { to: '/3/timeline', label: 'Chronicle', end: false },
+  { to: '/3/scatter', label: 'Value', end: false },
+]
 
 function V3App() {
   return (
-    <div className="min-h-screen bg-white text-gray-800">
-      {/* Navigation */}
-      <nav className="border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center space-x-10">
-              <Link to="/" className="text-xs text-gray-400 hover:text-gray-600 tracking-wide uppercase">
-                ← Variants
-              </Link>
-              <h1 className="text-lg font-light tracking-widest text-gray-900 uppercase">
+    <div className="v3-editorial min-h-screen flex flex-col">
+      {/* ====== NAVIGATION ====== */}
+      <nav className="v3-nav sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-8 md:px-12">
+          <div className="flex items-center justify-between h-16">
+            {/* Left: back link */}
+            <Link
+              to="/"
+              className="v3-label text-xs hover:text-[#C9A96E] transition-colors duration-400"
+              style={{ textDecoration: 'none', fontSize: '0.6rem', letterSpacing: '0.15em' }}
+            >
+              ← Variants
+            </Link>
+
+            {/* Center: site title */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <Link
+                to="/3"
+                className="v3-headline text-base md:text-lg tracking-wide"
+                style={{ textDecoration: 'none', letterSpacing: '0.15em', fontWeight: 400 }}
+              >
                 Model Arena
-              </h1>
-              <div className="hidden md:flex space-x-6">
+              </Link>
+            </div>
+
+            {/* Right: nav links */}
+            <div className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
                 <NavLink
-                  to="/3"
-                  end
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
                   className={({ isActive }) =>
-                    `px-2 py-1 text-sm tracking-wide transition-colors duration-200 ${
-                      isActive
-                        ? 'text-emerald-600 border-b-2 border-emerald-500'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`
+                    `v3-nav-link ${isActive ? 'active' : ''}`
                   }
                 >
-                  Home
+                  {item.label}
                 </NavLink>
+              ))}
+            </div>
+
+            {/* Mobile nav */}
+            <div className="flex md:hidden items-center gap-4">
+              {navItems.slice(0, 3).map((item) => (
                 <NavLink
-                  to="/3/radar"
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
                   className={({ isActive }) =>
-                    `px-2 py-1 text-sm tracking-wide transition-colors duration-200 ${
-                      isActive
-                        ? 'text-emerald-600 border-b-2 border-emerald-500'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`
+                    `v3-nav-link ${isActive ? 'active' : ''}`
                   }
+                  style={{ fontSize: '0.6rem' }}
                 >
-                  Radar
+                  {item.label}
                 </NavLink>
-                <NavLink
-                  to="/3/timeline"
-                  className={({ isActive }) =>
-                    `px-2 py-1 text-sm tracking-wide transition-colors duration-200 ${
-                      isActive
-                        ? 'text-emerald-600 border-b-2 border-emerald-500'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`
-                  }
-                >
-                  Timeline
-                </NavLink>
-                <NavLink
-                  to="/3/scatter"
-                  className={({ isActive }) =>
-                    `px-2 py-1 text-sm tracking-wide transition-colors duration-200 ${
-                      isActive
-                        ? 'text-emerald-600 border-b-2 border-emerald-500'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`
-                  }
-                >
-                  Scatter
-                </NavLink>
-                <NavLink
-                  to="/3/comparison"
-                  className={({ isActive }) =>
-                    `px-2 py-1 text-sm tracking-wide transition-colors duration-200 ${
-                      isActive
-                        ? 'text-emerald-600 border-b-2 border-emerald-500'
-                        : 'text-gray-500 hover:text-gray-900'
-                    }`
-                  }
-                >
-                  Compare
-                </NavLink>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-8 py-12">
+      {/* ====== MAIN CONTENT ====== */}
+      <main className="flex-1">
         <Routes>
           <Route index element={<Home />} />
           <Route path="radar" element={<RadarView />} />
@@ -98,12 +88,23 @@ function V3App() {
         </Routes>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 mt-auto">
-        <div className="max-w-5xl mx-auto px-8 py-8">
-          <p className="text-center text-xs text-gray-400 tracking-widest uppercase">
-            Variant 3: Minimal Zen — Model Arena
-          </p>
+      {/* ====== FOOTER ====== */}
+      <footer className="v3-footer">
+        <div className="max-w-6xl mx-auto px-8 md:px-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="v3-label" style={{ fontSize: '0.55rem', letterSpacing: '0.3em' }}>
+              Variant III · Luxury Editorial
+            </div>
+            <div
+              className="v3-headline text-sm"
+              style={{ fontWeight: 400, letterSpacing: '0.1em' }}
+            >
+              Model Arena
+            </div>
+            <div className="v3-label" style={{ fontSize: '0.55rem', letterSpacing: '0.3em' }}>
+              LLM Benchmark Visualizations
+            </div>
+          </div>
         </div>
       </footer>
     </div>
