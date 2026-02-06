@@ -1,0 +1,438 @@
+/* ============================================
+   VARIANT 1: BRUTALIST / RAW CONCRETE
+   No rounded corners. No gradients. No mercy.
+   ============================================ */
+
+.v1-brutalist {
+  font-family: 'Space Mono', monospace;
+  background: #000;
+  color: #FFF;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+.v1-brutalist * {
+  border-radius: 0 !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ---- TYPOGRAPHY ---- */
+
+.v1-brutalist h1,
+.v1-brutalist h2,
+.v1-brutalist h3,
+.v1-brutalist h4 {
+  font-family: 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.v1-brutalist .font-data {
+  font-family: 'Space Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- NAVIGATION ---- */
+
+.v1-nav {
+  border-bottom: 3px solid #FFF;
+  background: #000;
+}
+
+.v1-nav a {
+  color: #B0B0B0;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  padding: 0.5rem 0;
+}
+
+.v1-nav a:hover {
+  color: #000 !important;
+  background: #FF6600 !important;
+}
+
+.v1-nav a.active {
+  color: #FF6600;
+}
+
+.v1-nav .pipe {
+  color: #333;
+  user-select: none;
+}
+
+/* ---- TABLES (the hero) ---- */
+
+.v1-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+}
+
+.v1-table thead {
+  background: #FFF;
+  color: #000;
+}
+
+.v1-table thead th {
+  padding: 0.75rem 0.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.65rem;
+  border-bottom: 3px solid #FF6600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.v1-table tbody tr {
+  border-bottom: 1px solid #333;
+}
+
+.v1-table tbody tr:hover {
+  background: #FF6600 !important;
+  color: #000 !important;
+}
+
+.v1-table tbody tr:hover td {
+  color: #000 !important;
+}
+
+.v1-table tbody td {
+  padding: 0.5rem;
+  border-right: 1px solid #1a1a1a;
+  color: #FFF;
+}
+
+.v1-table tbody td:last-child {
+  border-right: none;
+}
+
+.v1-table .top-performer {
+  color: #FF6600;
+  font-weight: 700;
+}
+
+/* ---- CARDS/SECTIONS ---- */
+
+.v1-section {
+  border: 2px solid #FFF;
+  padding: 1.5rem;
+  background: #000;
+}
+
+.v1-section-header {
+  border-bottom: 2px solid #FF6600;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* ---- STAT BLOCKS ---- */
+
+.v1-stat {
+  border: 1px solid #333;
+  padding: 1rem;
+  text-align: center;
+}
+
+.v1-stat:hover {
+  border-color: #FF6600;
+  background: #FF6600;
+  color: #000;
+}
+
+.v1-stat .v1-stat-number {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+  color: #FF6600;
+}
+
+.v1-stat:hover .v1-stat-number {
+  color: #000;
+}
+
+.v1-stat .v1-stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #B0B0B0;
+  margin-top: 0.25rem;
+}
+
+.v1-stat:hover .v1-stat-label {
+  color: #000;
+}
+
+/* ---- MEGA NUMBER ---- */
+
+.v1-mega-number {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(8rem, 20vw, 16rem);
+  line-height: 0.85;
+  color: #FF6600;
+  letter-spacing: -0.05em;
+}
+
+/* ---- LINKS ---- */
+
+.v1-brutalist a.v1-link {
+  color: #FF6600;
+  text-decoration: none;
+  border-bottom: 1px solid #FF6600;
+}
+
+.v1-brutalist a.v1-link:hover {
+  background: #FF6600;
+  color: #000;
+}
+
+/* ---- INPUTS/SELECTS ---- */
+
+.v1-input {
+  background: #000;
+  border: 2px solid #FFF;
+  color: #FFF;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.v1-input:focus {
+  border-color: #FF6600;
+}
+
+.v1-input::placeholder {
+  color: #555;
+}
+
+.v1-select {
+  background: #000;
+  border: 2px solid #FFF;
+  color: #FFF;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23FF6600'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  padding-right: 2rem;
+}
+
+.v1-select:focus {
+  border-color: #FF6600;
+  outline: none;
+}
+
+/* ---- BUTTONS ---- */
+
+.v1-btn {
+  background: #FFF;
+  color: #000;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #FFF;
+  cursor: pointer;
+}
+
+.v1-btn:hover {
+  background: #FF6600;
+  border-color: #FF6600;
+  color: #000;
+}
+
+.v1-btn-outline {
+  background: transparent;
+  color: #FFF;
+  border: 2px solid #FFF;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+}
+
+.v1-btn-outline:hover {
+  background: #FFF;
+  color: #000;
+}
+
+/* ---- MODEL SELECTOR GRID ---- */
+
+.v1-model-select-btn {
+  border: 1px solid #333;
+  padding: 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  background: #000;
+}
+
+.v1-model-select-btn:hover {
+  border-color: #FF6600;
+  background: #0a0a0a;
+}
+
+.v1-model-select-btn.selected {
+  border-color: #FF6600;
+  border-width: 2px;
+  background: #1a0800;
+}
+
+/* ---- PROVIDER PILLS ---- */
+
+.v1-provider-pill {
+  display: inline-block;
+  border: 1px solid #555;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.v1-provider-pill:hover {
+  background: #FFF;
+  color: #000;
+  border-color: #FFF;
+}
+
+.v1-provider-pill.active {
+  background: #FF6600;
+  color: #000;
+  border-color: #FF6600;
+}
+
+/* ---- CHART CONTAINERS ---- */
+
+.v1-chart-container {
+  border: 2px solid #FFF;
+  background: #000;
+  padding: 1rem;
+}
+
+/* D3 overrides for brutalist style */
+.v1-brutalist .axis path,
+.v1-brutalist .axis line {
+  stroke: #FFF;
+  stroke-width: 2;
+}
+
+.v1-brutalist .axis text {
+  fill: #FFF;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+}
+
+.v1-brutalist .grid line {
+  stroke: #333 !important;
+  stroke-opacity: 1 !important;
+}
+
+.v1-brutalist .grid path {
+  stroke: none;
+}
+
+/* ---- FOOTER ---- */
+
+.v1-footer {
+  border-top: 3px solid #FFF;
+  background: #000;
+}
+
+/* ---- SCROLLBAR ---- */
+
+.v1-brutalist ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.v1-brutalist ::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.v1-brutalist ::-webkit-scrollbar-thumb {
+  background: #333;
+  border: 1px solid #FFF;
+}
+
+.v1-brutalist ::-webkit-scrollbar-thumb:hover {
+  background: #FF6600;
+}
+
+/* ---- RESPONSIVE RULES ---- */
+
+@media (max-width: 768px) {
+  .v1-mega-number {
+    font-size: 6rem;
+  }
+  
+  .v1-table {
+    font-size: 0.65rem;
+  }
+  
+  .v1-table thead th {
+    font-size: 0.55rem;
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .v1-table tbody td {
+    padding: 0.35rem 0.25rem;
+  }
+}
+
+/* ---- DENSE GRID ---- */
+
+.v1-dense-grid {
+  display: grid;
+  gap: 0;
+  border: 1px solid #333;
+}
+
+.v1-dense-grid > * {
+  border: 1px solid #333;
+}
+
+/* ---- RULE LINES ---- */
+
+.v1-rule {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 1rem 0;
+}
+
+.v1-rule-heavy {
+  border: none;
+  border-top: 3px solid #FF6600;
+  margin: 1.5rem 0;
+}
+
+/* ---- TOOLTIP BRUTALIST ---- */
+
+.v1-tooltip {
+  background: #000;
+  border: 2px solid #FF6600;
+  color: #FFF;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.75rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: 50;
+}
