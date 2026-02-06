@@ -4,15 +4,16 @@ import { Model } from '@/types/model'
 import {
   prepareTimelineData,
   groupModelFamilies,
-  getProviderColor,
   TimelineDataPoint,
 } from '@/utils/timeline'
 import { formatDate } from '@/utils/formatters'
+import { VariantTheme, defaultTheme } from '@/types/theme'
 
 interface TimelineProps {
   models: Model[]
   width?: number
   height?: number
+  theme?: VariantTheme
 }
 
 interface TooltipData {
@@ -22,7 +23,11 @@ interface TooltipData {
   score: number
 }
 
-function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
+function getProviderColorFromTheme(provider: string, theme: VariantTheme): string {
+  return theme.colors.providerColors[provider] || '#6b7280'
+}
+
+function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: TimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width, height })
@@ -152,14 +157,14 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
       .attr('class', 'axis')
       .selectAll('text')
       .attr('font-size', isMobile ? '11px' : '12px')
-      .attr('fill', '#6b7280')
+      .attr('fill', theme.colors.muted)
 
     g.append('g')
       .call(yAxis)
       .attr('class', 'axis')
       .selectAll('text')
       .attr('font-size', isMobile ? '11px' : '12px')
-      .attr('fill', '#6b7280')
+      .attr('fill', theme.colors.muted)
 
     // Axis labels
     g.append('text')
@@ -168,7 +173,8 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
       .attr('text-anchor', 'middle')
       .attr('font-size', isMobile ? '12px' : '14px')
       .attr('font-weight', '600')
-      .attr('fill', '#374151')
+      .attr('font-family', theme.typography.body)
+      .attr('fill', theme.colors.text)
       .text('Release Date')
 
     g.append('text')
@@ -178,7 +184,8 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
       .attr('text-anchor', 'middle')
       .attr('font-size', isMobile ? '12px' : '14px')
       .attr('font-weight', '600')
-      .attr('fill', '#374151')
+      .attr('font-family', theme.typography.body)
+      .attr('fill', theme.colors.text)
       .text('Average Capability Score')
 
     // Grid lines
@@ -186,12 +193,16 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
       .attr('class', 'grid')
       .attr('opacity', 0.1)
       .call(d3.axisLeft(yScale).tickSize(-innerWidth).tickFormat(() => ''))
+      .selectAll('line')
+      .attr('stroke', theme.chartStyle.gridColor)
 
     g.append('g')
       .attr('class', 'grid')
       .attr('opacity', 0.1)
       .attr('transform', `translate(0, ${innerHeight})`)
       .call(d3.axisBottom(xScale).tickSize(-innerHeight).tickFormat(() => ''))
+      .selectAll('line')
+      .attr('stroke', theme.chartStyle.gridColor)
 
     // Draw family connection lines
     families.forEach(family => {
@@ -243,8 +254,8 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
       .attr('cx', d => xScale(d.date))
       .attr('cy', d => yScale(d.averageScore))
       .attr('r', 0)
-      .attr('fill', d => getProviderColor(d.model.provider))
-      .attr('stroke', 'white')
+      .attr('fill', d => getProviderColorFromTheme(d.model.provider, theme))
+      .attr('stroke', theme.colors.surface)
       .attr('stroke-width', isMobile ? 1.5 : 2)
       .attr('opacity', 0.85)
       .style('cursor', 'pointer')
@@ -289,9 +300,9 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
     dots
       .transition()
       .duration(500)
-      .delay((d, i) => i * 30)
+      .delay((_d, i) => i * 30)
       .attr('r', d => (d.parameterSize ? sizeScale(d.parameterSize) : isMobile ? 6 : 8))
-  }, [models, dimensions, currentDate])
+  }, [models, dimensions, currentDate, theme])
 
   const handlePlayPause = () => {
     if (!isPlaying) {
@@ -315,7 +326,7 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
 
   if (models.length === 0) {
     return (
-      <div className="flex items-center justify-center h-96 text-gray-500">
+      <div className="flex items-center justify-center h-96" style={{ color: theme.colors.muted }}>
         No models available to display
       </div>
     )
@@ -327,39 +338,47 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
         ref={svgRef}
         width={dimensions.width}
         height={dimensions.height}
-        className="overflow-visible bg-white rounded-lg shadow-sm"
-        style={{ maxWidth: '100%', height: 'auto' }}
+        className="overflow-visible rounded-lg shadow-sm"
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          backgroundColor: theme.colors.surface,
+        }}
       />
 
       {/* Tooltip */}
       {tooltip && (
         <div
-          className="absolute pointer-events-none bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50"
+          className="absolute pointer-events-none rounded-lg shadow-lg p-3 z-50"
           style={{
             left: tooltip.x + 15,
             top: tooltip.y - 10,
             maxWidth: '250px',
+            backgroundColor: theme.chartStyle.tooltipBg,
+            color: theme.chartStyle.tooltipText,
+            border: `1px solid ${theme.colors.border}`,
+            borderRadius: theme.borderRadius,
           }}
         >
-          <div className="font-bold text-sm text-gray-900 mb-1">
+          <div className="font-bold text-sm mb-1">
             {tooltip.model.name}
           </div>
-          <div className="text-xs text-gray-600 space-y-1">
+          <div className="text-xs space-y-1" style={{ color: theme.colors.muted }}>
             <div className="flex justify-between">
-              <span className="text-gray-500">Provider:</span>
-              <span className="font-medium">{tooltip.model.provider}</span>
+              <span>Provider:</span>
+              <span className="font-medium" style={{ color: theme.chartStyle.tooltipText }}>{tooltip.model.provider}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Released:</span>
-              <span className="font-medium">{formatDate(tooltip.model.release_date)}</span>
+              <span>Released:</span>
+              <span className="font-medium" style={{ color: theme.chartStyle.tooltipText }}>{formatDate(tooltip.model.release_date)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Parameters:</span>
-              <span className="font-medium">{tooltip.model.parameters}</span>
+              <span>Parameters:</span>
+              <span className="font-medium" style={{ color: theme.chartStyle.tooltipText }}>{tooltip.model.parameters}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Avg Score:</span>
-              <span className="font-medium">{tooltip.score.toFixed(1)}</span>
+              <span>Avg Score:</span>
+              <span className="font-medium" style={{ color: theme.chartStyle.tooltipText }}>{tooltip.score.toFixed(1)}</span>
             </div>
           </div>
         </div>
@@ -369,26 +388,22 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
       <div className="flex items-center justify-center gap-4 mt-6">
         <button
           onClick={handlePlayPause}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium text-sm shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors duration-200 font-medium text-sm shadow-sm"
+          style={{
+            backgroundColor: theme.colors.primary,
+            borderRadius: theme.borderRadius,
+          }}
         >
           {isPlaying ? (
             <>
-              <svg
-                className="w-4 h-4"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
               </svg>
               Pause
             </>
           ) : (
             <>
-              <svg
-                className="w-4 h-4"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
               Play
@@ -398,26 +413,21 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
 
         <button
           onClick={handleReset}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors duration-200 font-medium text-sm shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm shadow-sm"
+          style={{
+            backgroundColor: theme.colors.border,
+            color: theme.colors.text,
+            borderRadius: theme.borderRadius,
+          }}
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           Reset
         </button>
 
         {currentDate && (
-          <div className="text-sm text-gray-600 font-medium">
+          <div className="text-sm font-medium" style={{ color: theme.colors.muted }}>
             {d3.timeFormat('%B %Y')(currentDate)}
           </div>
         )}
@@ -425,20 +435,23 @@ function Timeline({ models, width = 1200, height = 600 }: TimelineProps) {
 
       {/* Legend */}
       <div className="mt-6 space-y-4">
-        <div className="text-sm font-semibold text-gray-700">Providers</div>
+        <div className="text-sm font-semibold" style={{ color: theme.colors.text }}>Providers</div>
         <div className="flex flex-wrap gap-3">
           {Array.from(new Set(models.map(m => m.provider))).map(provider => (
             <div key={provider} className="flex items-center gap-2">
               <div
-                className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
-                style={{ backgroundColor: getProviderColor(provider) }}
+                className="w-4 h-4 rounded-full border-2 shadow-sm"
+                style={{
+                  backgroundColor: getProviderColorFromTheme(provider, theme),
+                  borderColor: theme.colors.surface,
+                }}
               />
-              <span className="text-xs sm:text-sm text-gray-700">{provider}</span>
+              <span className="text-xs sm:text-sm" style={{ color: theme.colors.text }}>{provider}</span>
             </div>
           ))}
         </div>
 
-        <div className="text-xs text-gray-500 mt-2">
+        <div className="text-xs mt-2" style={{ color: theme.colors.muted }}>
           Dot size represents parameter count (when available)
         </div>
       </div>

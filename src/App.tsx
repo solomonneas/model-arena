@@ -1,109 +1,22 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom'
-import Home from './pages/Home'
-import RadarView from './pages/RadarView'
-import TimelineView from './pages/TimelineView'
-import ScatterView from './pages/ScatterView'
-import ComparisonView from './pages/ComparisonView'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import VariantPicker from './pages/VariantPicker'
+import V1App from './variants/v1/App'
+import V2App from './variants/v2/App'
+import V3App from './variants/v3/App'
+import V4App from './variants/v4/App'
+import V5App from './variants/v5/App'
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        {/* Navigation */}
-        <nav className="bg-white shadow-sm border-b border-gray-200">
-          <div className="container-custom">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center space-x-8">
-                <h1 className="text-xl font-bold text-primary-600">
-                  Model Arena
-                </h1>
-                <div className="hidden md:flex space-x-4">
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-primary-100 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`
-                    }
-                  >
-                    Home
-                  </NavLink>
-                  <NavLink
-                    to="/radar"
-                    className={({ isActive }) =>
-                      `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-primary-100 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`
-                    }
-                  >
-                    Radar Chart
-                  </NavLink>
-                  <NavLink
-                    to="/timeline"
-                    className={({ isActive }) =>
-                      `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-primary-100 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`
-                    }
-                  >
-                    Timeline
-                  </NavLink>
-                  <NavLink
-                    to="/scatter"
-                    className={({ isActive }) =>
-                      `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-primary-100 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`
-                    }
-                  >
-                    Scatter Plot
-                  </NavLink>
-                  <NavLink
-                    to="/comparison"
-                    className={({ isActive }) =>
-                      `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        isActive
-                          ? 'bg-primary-100 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`
-                    }
-                  >
-                    Comparison Table
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        {/* Main Content */}
-        <main className="container-custom py-8">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/radar" element={<RadarView />} />
-            <Route path="/timeline" element={<TimelineView />} />
-            <Route path="/scatter" element={<ScatterView />} />
-            <Route path="/comparison" element={<ComparisonView />} />
-          </Routes>
-        </main>
-
-        {/* Footer */}
-        <footer className="bg-white border-t border-gray-200 mt-auto">
-          <div className="container-custom py-6">
-            <p className="text-center text-sm text-gray-600">
-              Model Arena - Interactive LLM Benchmark Visualizations
-            </p>
-          </div>
-        </footer>
-      </div>
+      <Routes>
+        <Route path="/" element={<VariantPicker />} />
+        <Route path="/1/*" element={<V1App />} />
+        <Route path="/2/*" element={<V2App />} />
+        <Route path="/3/*" element={<V3App />} />
+        <Route path="/4/*" element={<V4App />} />
+        <Route path="/5/*" element={<V5App />} />
+      </Routes>
     </Router>
   )
 }

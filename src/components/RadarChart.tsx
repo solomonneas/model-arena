@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import { Model } from '@/types/model'
+import { VariantTheme, defaultTheme } from '@/types/theme'
 
 interface RadarChartProps {
   models: Model[]
   width?: number
   height?: number
+  theme?: VariantTheme
 }
 
 interface RadarDataPoint {
@@ -16,19 +18,24 @@ interface RadarDataPoint {
 
 const RADAR_AXES = ['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA']
 
-// Color palette for up to 4 models
-const MODEL_COLORS = [
+// Default color palette for up to 4 models
+const DEFAULT_MODEL_COLORS = [
   '#3b82f6', // blue
   '#10b981', // green
   '#f59e0b', // amber
   '#ef4444', // red
 ]
 
-function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
+function RadarChart({ models, width = 600, height = 600, theme = defaultTheme }: RadarChartProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredModel, setHoveredModel] = useState<string | null>(null)
   const [dimensions, setDimensions] = useState({ width, height })
+
+  // Derive model colors from theme provider colors or use defaults
+  const modelColors = models.slice(0, 4).map((model, index) => {
+    return theme.colors.providerColors[model.provider] || DEFAULT_MODEL_COLORS[index]
+  })
 
   // Handle responsive sizing
   useEffect(() => {
@@ -82,7 +89,7 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
         .attr('cy', 0)
         .attr('r', levelRadius)
         .attr('fill', 'none')
-        .attr('stroke', '#e5e7eb')
+        .attr('stroke', theme.chartStyle.gridColor)
         .attr('stroke-width', 1)
         .attr('opacity', 0.5)
     }
@@ -100,7 +107,7 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
         .attr('y1', 0)
         .attr('x2', lineCoords.x)
         .attr('y2', lineCoords.y)
-        .attr('stroke', '#d1d5db')
+        .attr('stroke', theme.chartStyle.axisColor)
         .attr('stroke-width', 1.5)
 
       // Add axis labels
@@ -117,7 +124,8 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
         .attr('dominant-baseline', 'middle')
         .attr('font-size', isMobile ? '11px' : '14px')
         .attr('font-weight', '600')
-        .attr('fill', '#374151')
+        .attr('font-family', theme.typography.body)
+        .attr('fill', theme.colors.text)
         .text(axis)
     })
 
@@ -130,7 +138,8 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
         .attr('x', 5)
         .attr('y', -levelRadius)
         .attr('font-size', isMobile ? '8px' : '10px')
-        .attr('fill', '#9ca3af')
+        .attr('font-family', theme.typography.mono)
+        .attr('fill', theme.colors.muted)
         .text(levelValue.toFixed(0))
     }
 
@@ -138,7 +147,7 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
     const radarLine = d3
       .lineRadial<RadarDataPoint>()
       .radius((d) => rScale(d.value))
-      .angle((d, i) => angleSlice * i - Math.PI / 2)
+      .angle((_d, i) => angleSlice * i - Math.PI / 2)
       .curve(d3.curveLinearClosed)
 
     // Draw each model's radar polygon
@@ -149,7 +158,7 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
         model,
       }))
 
-      const color = MODEL_COLORS[modelIndex]
+      const color = modelColors[modelIndex]
       const isHovered = hoveredModel === model.id
       const isDimmed = hoveredModel !== null && hoveredModel !== model.id
 
@@ -194,7 +203,7 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
           .attr('cy', 0)
           .attr('r', pointRadius)
           .attr('fill', color)
-          .attr('stroke', 'white')
+          .attr('stroke', theme.colors.surface)
           .attr('stroke-width', isMobile ? 1.5 : 2)
           .attr('opacity', isDimmed ? 0.3 : 1)
           .style('cursor', 'pointer')
@@ -206,11 +215,11 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
           .attr('cy', y)
       })
     })
-  }, [models, dimensions, hoveredModel])
+  }, [models, dimensions, hoveredModel, theme, modelColors])
 
   if (models.length === 0) {
     return (
-      <div className="flex items-center justify-center h-96 text-gray-500">
+      <div className="flex items-center justify-center h-96" style={{ color: theme.colors.muted }}>
         Select up to 4 models to compare
       </div>
     )
@@ -218,7 +227,7 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
 
   if (models.length > 4) {
     return (
-      <div className="flex items-center justify-center h-96 text-gray-500">
+      <div className="flex items-center justify-center h-96" style={{ color: theme.colors.muted }}>
         Please select no more than 4 models
       </div>
     )
@@ -237,32 +246,33 @@ function RadarChart({ models, width = 600, height = 600 }: RadarChartProps) {
       {/* Legend */}
       <div className="flex flex-wrap gap-3 sm:gap-4 justify-center mt-6 px-2">
         {models.slice(0, 4).map((model, index) => {
-          const color = MODEL_COLORS[index]
+          const color = modelColors[index]
           const isHovered = hoveredModel === model.id
           const isDimmed = hoveredModel !== null && hoveredModel !== model.id
 
           return (
             <div
               key={model.id}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all cursor-pointer"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 transition-all cursor-pointer"
               style={{
                 backgroundColor: isHovered ? `${color}10` : 'transparent',
                 opacity: isDimmed ? 0.4 : 1,
                 transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                borderRadius: theme.borderRadius,
               }}
               onMouseEnter={() => setHoveredModel(model.id)}
               onMouseLeave={() => setHoveredModel(null)}
               onTouchStart={() => setHoveredModel(model.id)}
             >
               <div
-                className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-white shadow-sm flex-shrink-0"
-                style={{ backgroundColor: color }}
+                className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 shadow-sm flex-shrink-0"
+                style={{ backgroundColor: color, borderColor: theme.colors.surface }}
               />
               <div className="min-w-0">
-                <div className="font-semibold text-xs sm:text-sm text-gray-900 truncate">
+                <div className="font-semibold text-xs sm:text-sm truncate" style={{ color: theme.colors.text }}>
                   {model.name}
                 </div>
-                <div className="text-xs text-gray-500 truncate">{model.provider}</div>
+                <div className="text-xs truncate" style={{ color: theme.colors.muted }}>{model.provider}</div>
               </div>
             </div>
           )

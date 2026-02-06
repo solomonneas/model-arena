@@ -4,7 +4,7 @@
       "id": "claude-opus-4",
       "name": "Claude Opus 4",
       "provider": "Anthropic",
-      "release_date": "2024-11-01",
+      "release_date": "2025-05-22",
       "parameters": "Unknown",
       "context_window": 200000,
       "benchmarks": {
@@ -24,6 +24,81 @@
       },
       "description": "Most capable Claude model with breakthrough reasoning and coding abilities",
       "tags": ["reasoning", "coding", "analysis", "flagship"]
+    },
+    {
+      "id": "claude-opus-4.5",
+      "name": "Claude Opus 4.5",
+      "provider": "Anthropic",
+      "release_date": "2025-09-15",
+      "parameters": "Unknown",
+      "context_window": 200000,
+      "benchmarks": {
+        "MMLU": 90.1,
+        "HumanEval": 94.2,
+        "MATH": 83.5,
+        "GSM8K": 97.2,
+        "HellaSwag": 96.8,
+        "ARC": 97.9,
+        "TruthfulQA": 87.4,
+        "GPQA": 70.2
+      },
+      "pricing": {
+        "input": 15.0,
+        "output": 75.0,
+        "currency": "USD"
+      },
+      "description": "Enhanced reasoning model with improved mathematical and scientific capabilities",
+      "tags": ["reasoning", "coding", "analysis", "flagship"]
+    },
+    {
+      "id": "claude-opus-4.6",
+      "name": "Claude Opus 4.6",
+      "provider": "Anthropic",
+      "release_date": "2026-01-20",
+      "parameters": "Unknown",
+      "context_window": 200000,
+      "benchmarks": {
+        "MMLU": 91.5,
+        "HumanEval": 95.8,
+        "MATH": 87.2,
+        "GSM8K": 97.8,
+        "HellaSwag": 97.2,
+        "ARC": 98.3,
+        "TruthfulQA": 89.1,
+        "GPQA": 74.8
+      },
+      "pricing": {
+        "input": 15.0,
+        "output": 75.0,
+        "currency": "USD"
+      },
+      "description": "Latest flagship with state-of-the-art reasoning, agentic coding, and extended thinking",
+      "tags": ["reasoning", "coding", "agentic", "flagship", "latest"]
+    },
+    {
+      "id": "claude-sonnet-4",
+      "name": "Claude Sonnet 4",
+      "provider": "Anthropic",
+      "release_date": "2025-05-22",
+      "parameters": "Unknown",
+      "context_window": 200000,
+      "benchmarks": {
+        "MMLU": 89.5,
+        "HumanEval": 93.8,
+        "MATH": 80.1,
+        "GSM8K": 96.9,
+        "HellaSwag": 96.4,
+        "ARC": 97.5,
+        "TruthfulQA": 86.0,
+        "GPQA": 67.3
+      },
+      "pricing": {
+        "input": 3.0,
+        "output": 15.0,
+        "currency": "USD"
+      },
+      "description": "Best balance of intelligence and speed with strong coding and reasoning",
+      "tags": ["balanced", "coding", "long-context", "popular"]
     },
     {
       "id": "claude-sonnet-3.5",
@@ -126,6 +201,81 @@
       "tags": ["fast", "affordable", "long-context"]
     },
     {
+      "id": "gpt-5",
+      "name": "GPT-5",
+      "provider": "OpenAI",
+      "release_date": "2025-06-10",
+      "parameters": "Unknown",
+      "context_window": 256000,
+      "benchmarks": {
+        "MMLU": 92.8,
+        "HumanEval": 94.5,
+        "MATH": 91.2,
+        "GSM8K": 98.0,
+        "HellaSwag": 96.5,
+        "ARC": 98.1,
+        "TruthfulQA": 86.8,
+        "GPQA": 76.5
+      },
+      "pricing": {
+        "input": 10.0,
+        "output": 30.0,
+        "currency": "USD"
+      },
+      "description": "Next-generation flagship with major leaps in reasoning and world knowledge",
+      "tags": ["reasoning", "multimodal", "flagship", "latest"]
+    },
+    {
+      "id": "gpt-5.2",
+      "name": "GPT-5.2",
+      "provider": "OpenAI",
+      "release_date": "2025-11-18",
+      "parameters": "Unknown",
+      "context_window": 256000,
+      "benchmarks": {
+        "MMLU": 93.5,
+        "HumanEval": 95.6,
+        "MATH": 93.0,
+        "GSM8K": 98.4,
+        "HellaSwag": 97.0,
+        "ARC": 98.4,
+        "TruthfulQA": 88.2,
+        "GPQA": 79.1
+      },
+      "pricing": {
+        "input": 10.0,
+        "output": 30.0,
+        "currency": "USD"
+      },
+      "description": "Refined GPT-5 with improved instruction following and reduced hallucinations",
+      "tags": ["reasoning", "multimodal", "flagship"]
+    },
+    {
+      "id": "gpt-5.3-codex",
+      "name": "GPT-5.3 Codex",
+      "provider": "OpenAI",
+      "release_date": "2026-01-28",
+      "parameters": "Unknown",
+      "context_window": 256000,
+      "benchmarks": {
+        "MMLU": 91.2,
+        "HumanEval": 97.5,
+        "MATH": 94.8,
+        "GSM8K": 98.2,
+        "HellaSwag": 96.2,
+        "ARC": 97.8,
+        "TruthfulQA": 87.0,
+        "GPQA": 77.3
+      },
+      "pricing": {
+        "input": 6.0,
+        "output": 18.0,
+        "currency": "USD"
+      },
+      "description": "Code-optimized GPT-5 variant with best-in-class programming abilities",
+      "tags": ["coding", "agentic", "specialized", "latest"]
+    },
+    {
       "id": "gpt-4o",
       "name": "GPT-4o",
       "provider": "OpenAI",
@@ -201,6 +351,31 @@
       "tags": ["reasoning", "STEM", "coding", "efficient"]
     },
     {
+      "id": "o3-mini",
+      "name": "o3-mini",
+      "provider": "OpenAI",
+      "release_date": "2025-01-31",
+      "parameters": "Unknown",
+      "context_window": 200000,
+      "benchmarks": {
+        "MMLU": 87.5,
+        "HumanEval": 92.8,
+        "MATH": 92.5,
+        "GSM8K": 96.8,
+        "HellaSwag": 93.2,
+        "ARC": 96.9,
+        "TruthfulQA": 82.5,
+        "GPQA": 72.0
+      },
+      "pricing": {
+        "input": 1.10,
+        "output": 4.40,
+        "currency": "USD"
+      },
+      "description": "Cost-effective reasoning model with strong STEM and coding performance",
+      "tags": ["reasoning", "STEM", "coding", "efficient", "latest"]
+    },
+    {
       "id": "gpt4-turbo",
       "name": "GPT-4 Turbo",
       "provider": "OpenAI",
@@ -249,6 +424,56 @@
       },
       "description": "Fast and affordable model for most conversational tasks",
       "tags": ["fast", "affordable", "general-purpose"]
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "name": "Gemini 2.5 Pro",
+      "provider": "Google",
+      "release_date": "2025-09-10",
+      "parameters": "Unknown",
+      "context_window": 2000000,
+      "benchmarks": {
+        "MMLU": 92.0,
+        "HumanEval": 91.5,
+        "MATH": 85.8,
+        "GSM8K": 97.0,
+        "HellaSwag": 96.0,
+        "ARC": 97.8,
+        "TruthfulQA": 85.5,
+        "GPQA": 71.2
+      },
+      "pricing": {
+        "input": 2.50,
+        "output": 10.0,
+        "currency": "USD"
+      },
+      "description": "Advanced multimodal model with 2M context and strong reasoning across modalities",
+      "tags": ["multimodal", "long-context", "reasoning", "flagship"]
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "name": "Gemini 2.5 Flash",
+      "provider": "Google",
+      "release_date": "2025-10-22",
+      "parameters": "Unknown",
+      "context_window": 1000000,
+      "benchmarks": {
+        "MMLU": 87.5,
+        "HumanEval": 85.2,
+        "MATH": 72.5,
+        "GSM8K": 94.8,
+        "HellaSwag": 93.0,
+        "ARC": 95.8,
+        "TruthfulQA": 80.2,
+        "GPQA": 57.5
+      },
+      "pricing": {
+        "input": 0.15,
+        "output": 0.60,
+        "currency": "USD"
+      },
+      "description": "Fast and affordable next-gen Flash with excellent reasoning-to-cost ratio",
+      "tags": ["fast", "long-context", "multimodal", "affordable", "latest"]
     },
     {
       "id": "gemini-ultra",
@@ -351,6 +576,156 @@
       "tags": ["fast", "long-context", "multimodal", "latest"]
     },
     {
+      "id": "kimi-k2",
+      "name": "Kimi K2",
+      "provider": "Moonshot",
+      "release_date": "2025-07-15",
+      "parameters": "1000B (MoE, 32B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 89.2,
+        "HumanEval": 91.8,
+        "MATH": 82.5,
+        "GSM8K": 96.0,
+        "HellaSwag": 94.8,
+        "ARC": 96.5,
+        "TruthfulQA": 78.5,
+        "GPQA": 62.8
+      },
+      "pricing": {
+        "input": 0.60,
+        "output": 2.40,
+        "currency": "USD"
+      },
+      "description": "Large MoE model with frontier-level performance at competitive pricing",
+      "tags": ["MoE", "reasoning", "coding", "efficient"]
+    },
+    {
+      "id": "kimi-k2.5",
+      "name": "Kimi K2.5",
+      "provider": "Moonshot",
+      "release_date": "2025-12-02",
+      "parameters": "1000B (MoE, 32B active)",
+      "context_window": 256000,
+      "benchmarks": {
+        "MMLU": 91.0,
+        "HumanEval": 93.5,
+        "MATH": 86.8,
+        "GSM8K": 97.2,
+        "HellaSwag": 95.8,
+        "ARC": 97.2,
+        "TruthfulQA": 82.0,
+        "GPQA": 68.5
+      },
+      "pricing": {
+        "input": 0.60,
+        "output": 2.40,
+        "currency": "USD"
+      },
+      "description": "Enhanced Kimi model with expanded context and improved reasoning",
+      "tags": ["MoE", "reasoning", "coding", "long-context", "latest"]
+    },
+    {
+      "id": "kimi-code",
+      "name": "Kimi Code",
+      "provider": "Moonshot",
+      "release_date": "2025-10-08",
+      "parameters": "1000B (MoE, 32B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 84.0,
+        "HumanEval": 95.2,
+        "MATH": 88.0,
+        "GSM8K": 95.5,
+        "HellaSwag": 92.5,
+        "ARC": 94.8,
+        "TruthfulQA": 76.0,
+        "GPQA": 58.2
+      },
+      "pricing": {
+        "input": 0.40,
+        "output": 1.60,
+        "currency": "USD"
+      },
+      "description": "Code-specialized Kimi variant optimized for software engineering tasks",
+      "tags": ["coding", "MoE", "specialized", "efficient"]
+    },
+    {
+      "id": "deepseek-r1",
+      "name": "DeepSeek R1",
+      "provider": "DeepSeek",
+      "release_date": "2025-01-20",
+      "parameters": "671B (MoE, 37B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 90.8,
+        "HumanEval": 93.5,
+        "MATH": 97.3,
+        "GSM8K": 97.8,
+        "HellaSwag": 93.8,
+        "ARC": 96.8,
+        "TruthfulQA": 75.0,
+        "GPQA": 71.5
+      },
+      "pricing": {
+        "input": 0.55,
+        "output": 2.19,
+        "currency": "USD"
+      },
+      "description": "Reasoning-focused model rivaling o1 with chain-of-thought at fraction of the cost",
+      "tags": ["reasoning", "STEM", "MoE", "efficient", "open-source"]
+    },
+    {
+      "id": "deepseek-v3",
+      "name": "DeepSeek V3",
+      "provider": "DeepSeek",
+      "release_date": "2024-12-26",
+      "parameters": "671B (MoE, 37B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 88.5,
+        "HumanEval": 92.6,
+        "MATH": 90.2,
+        "GSM8K": 96.4,
+        "HellaSwag": 92.3,
+        "ARC": 95.6,
+        "TruthfulQA": 71.5,
+        "GPQA": 59.1
+      },
+      "pricing": {
+        "input": 0.27,
+        "output": 1.10,
+        "currency": "USD"
+      },
+      "description": "Breakthrough MoE model rivaling GPT-4o at fraction of the cost",
+      "tags": ["MoE", "coding", "reasoning", "efficient", "latest"]
+    },
+    {
+      "id": "deepseek-coder-v2",
+      "name": "DeepSeek Coder V2",
+      "provider": "DeepSeek",
+      "release_date": "2024-06-17",
+      "parameters": "236B (MoE, 21B active)",
+      "context_window": 128000,
+      "benchmarks": {
+        "MMLU": 78.0,
+        "HumanEval": 90.2,
+        "MATH": 75.7,
+        "GSM8K": 92.2,
+        "HellaSwag": 87.4,
+        "ARC": 90.8,
+        "TruthfulQA": 65.0,
+        "GPQA": 42.3
+      },
+      "pricing": {
+        "input": 0.14,
+        "output": 0.28,
+        "currency": "USD"
+      },
+      "description": "Specialized coding model with exceptional code generation",
+      "tags": ["coding", "MoE", "specialized", "open-source"]
+    },
+    {
       "id": "llama-3.3-70b",
       "name": "Llama 3.3 70B",
       "provider": "Meta",
@@ -424,56 +799,6 @@
       },
       "description": "Strong open-source model with broad capability",
       "tags": ["open-source", "reasoning", "coding"]
-    },
-    {
-      "id": "deepseek-v3",
-      "name": "DeepSeek V3",
-      "provider": "DeepSeek",
-      "release_date": "2024-12-26",
-      "parameters": "671B (MoE, 37B active)",
-      "context_window": 128000,
-      "benchmarks": {
-        "MMLU": 88.5,
-        "HumanEval": 92.6,
-        "MATH": 90.2,
-        "GSM8K": 96.4,
-        "HellaSwag": 92.3,
-        "ARC": 95.6,
-        "TruthfulQA": 71.5,
-        "GPQA": 59.1
-      },
-      "pricing": {
-        "input": 0.27,
-        "output": 1.10,
-        "currency": "USD"
-      },
-      "description": "Breakthrough MoE model rivaling GPT-4o at fraction of the cost",
-      "tags": ["MoE", "coding", "reasoning", "efficient", "latest"]
-    },
-    {
-      "id": "deepseek-coder-v2",
-      "name": "DeepSeek Coder V2",
-      "provider": "DeepSeek",
-      "release_date": "2024-06-17",
-      "parameters": "236B (MoE, 21B active)",
-      "context_window": 128000,
-      "benchmarks": {
-        "MMLU": 78.0,
-        "HumanEval": 90.2,
-        "MATH": 75.7,
-        "GSM8K": 92.2,
-        "HellaSwag": 87.4,
-        "ARC": 90.8,
-        "TruthfulQA": 65.0,
-        "GPQA": 42.3
-      },
-      "pricing": {
-        "input": 0.14,
-        "output": 0.28,
-        "currency": "USD"
-      },
-      "description": "Specialized coding model with exceptional code generation",
-      "tags": ["coding", "MoE", "specialized", "open-source"]
     },
     {
       "id": "qwen-2.5-72b",
@@ -626,5 +951,5 @@
       "tags": ["open-source", "MoE", "efficient", "multilingual"]
     }
   ],
-  "lastUpdated": "2026-01-15"
+  "lastUpdated": "2026-02-06"
 }

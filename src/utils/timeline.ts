@@ -56,13 +56,14 @@ export function groupModelFamilies(dataPoints: TimelineDataPoint[]): ModelFamily
 
   // Define family patterns
   const families: Record<string, { pattern: RegExp; color: string }> = {
-    'GPT': { pattern: /^(gpt|o1)/i, color: '#10b981' },
+    'GPT': { pattern: /^(gpt|o1|o3)/i, color: '#10b981' },
     'Claude': { pattern: /^claude/i, color: '#3b82f6' },
     'Gemini': { pattern: /^gemini/i, color: '#f59e0b' },
     'Llama': { pattern: /^llama/i, color: '#8b5cf6' },
     'Mistral': { pattern: /^(mistral|mixtral)/i, color: '#ec4899' },
     'DeepSeek': { pattern: /^deepseek/i, color: '#06b6d4' },
     'Qwen': { pattern: /^qwen/i, color: '#f97316' },
+    'Kimi': { pattern: /^kimi/i, color: '#FF6B35' },
   }
 
   // Group models by family
@@ -98,6 +99,7 @@ export function getProviderColor(provider: string): string {
     'Mistral AI': '#ec4899',
     'DeepSeek': '#06b6d4',
     'Alibaba': '#f97316',
+    'Moonshot': '#FF6B35',
   }
 
   return colors[provider] || '#6b7280'

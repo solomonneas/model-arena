@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import { Model } from '@/types/model'
-import { parseParameters, getProviderColor } from '@/utils/timeline'
+import { parseParameters } from '@/utils/timeline'
 import { formatPrice } from '@/utils/formatters'
+import { VariantTheme, defaultTheme } from '@/types/theme'
 
 interface ScatterPlotProps {
   models: Model[]
   width?: number
   height?: number
+  theme?: VariantTheme
 }
 
 interface ScatterDataPoint {
@@ -29,12 +31,16 @@ const BENCHMARK_OPTIONS = [
   { value: 'TruthfulQA', label: 'TruthfulQA (Truthfulness)' },
 ]
 
-function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
+function getProviderColorFromTheme(provider: string, theme: VariantTheme): string {
+  return theme.colors.providerColors[provider] || '#6b7280'
+}
+
+function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }: ScatterPlotProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const [selectedBenchmark, setSelectedBenchmark] = useState('MMLU')
-  const [hoveredModel, setHoveredModel] = useState<string | null>(null)
+  const [_hoveredModel, setHoveredModel] = useState<string | null>(null)
   const [dimensions, setDimensions] = useState({ width, height })
 
   // Handle responsive sizing
@@ -136,7 +142,7 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       .attr('x2', xScale(medianPrice))
       .attr('y1', 0)
       .attr('y2', innerHeight)
-      .attr('stroke', '#d1d5db')
+      .attr('stroke', theme.chartStyle.gridColor)
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '4,4')
 
@@ -145,7 +151,7 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       .attr('x2', innerWidth)
       .attr('y1', yScale(medianScore))
       .attr('y2', yScale(medianScore))
-      .attr('stroke', '#d1d5db')
+      .attr('stroke', theme.chartStyle.gridColor)
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '4,4')
 
@@ -156,9 +162,10 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
           .attr('x', quad.x + quad.width / 2)
           .attr('y', quad.y + 20)
           .attr('text-anchor', 'middle')
-          .attr('fill', '#9ca3af')
+          .attr('fill', theme.colors.muted)
           .attr('font-size', '12px')
           .attr('font-weight', '500')
+          .attr('font-family', theme.typography.body)
           .attr('opacity', 0.7)
           .text(quad.label)
       })
@@ -187,7 +194,7 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       g.append('path')
         .datum(paretoFrontier)
         .attr('fill', 'none')
-        .attr('stroke', '#10b981')
+        .attr('stroke', theme.colors.secondary)
         .attr('stroke-width', 2)
         .attr('stroke-dasharray', '5,5')
         .attr('d', lineGenerator)
@@ -211,15 +218,17 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       .call(xAxis)
       .selectAll('text')
       .style('font-size', isMobile ? '10px' : '12px')
+      .style('fill', theme.colors.muted)
 
     // X axis label
     g.append('text')
       .attr('x', innerWidth / 2)
       .attr('y', innerHeight + (isMobile ? 45 : 60))
       .attr('text-anchor', 'middle')
-      .attr('fill', '#4b5563')
+      .attr('fill', theme.colors.text)
       .attr('font-size', isMobile ? '12px' : '14px')
       .attr('font-weight', '600')
+      .attr('font-family', theme.typography.body)
       .text('Price per 1M tokens (log scale)')
 
     // Draw Y axis
@@ -231,6 +240,7 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       .call(yAxis)
       .selectAll('text')
       .style('font-size', isMobile ? '10px' : '12px')
+      .style('fill', theme.colors.muted)
 
     // Y axis label
     g.append('text')
@@ -238,9 +248,10 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       .attr('x', -innerHeight / 2)
       .attr('y', -(isMobile ? 45 : 60))
       .attr('text-anchor', 'middle')
-      .attr('fill', '#4b5563')
+      .attr('fill', theme.colors.text)
       .attr('font-size', isMobile ? '12px' : '14px')
       .attr('font-weight', '600')
+      .attr('font-family', theme.typography.body)
       .text(`${selectedBenchmark} Score`)
 
     // Draw grid lines
@@ -253,7 +264,7 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
           .tickFormat(() => '')
       )
       .selectAll('line')
-      .attr('stroke', '#e5e7eb')
+      .attr('stroke', theme.chartStyle.gridColor)
       .attr('stroke-opacity', 0.5)
 
     // Draw data points
@@ -266,8 +277,8 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       .attr('cx', d => xScale(d.price))
       .attr('cy', d => yScale(d.benchmarkScore))
       .attr('r', 0)
-      .attr('fill', d => getProviderColor(d.provider))
-      .attr('stroke', '#fff')
+      .attr('fill', d => getProviderColorFromTheme(d.provider, theme))
+      .attr('stroke', theme.colors.surface)
       .attr('stroke-width', 2)
       .attr('opacity', 0.8)
       .style('cursor', 'pointer')
@@ -299,7 +310,7 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
           .style('top', `${event.pageY - 10}px`)
           .html(`
             <div class="font-semibold mb-1">${d.model.name}</div>
-            <div class="text-sm text-gray-600 mb-2">${d.provider}</div>
+            <div class="text-sm mb-2" style="color: ${theme.colors.muted}">${d.provider}</div>
             <div class="text-xs space-y-1">
               <div><span class="font-medium">Price:</span> ${formatPrice(d.price)}/1M tokens</div>
               <div><span class="font-medium">${selectedBenchmark}:</span> ${d.benchmarkScore.toFixed(1)}</div>
@@ -326,21 +337,30 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
         tooltip.style('display', 'none')
       })
 
-  }, [models, selectedBenchmark, dimensions])
+  }, [models, selectedBenchmark, dimensions, theme])
+
+  // Get unique providers for legend
+  const uniqueProviders = Array.from(new Set(models.map(m => m.provider)))
 
   return (
     <div ref={containerRef} className="w-full">
       {/* Benchmark selector */}
       <div className="mb-4 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <label htmlFor="benchmark-select" className="text-sm font-medium text-gray-700">
+          <label htmlFor="benchmark-select" className="text-sm font-medium" style={{ color: theme.colors.text }}>
             Y-Axis Benchmark:
           </label>
           <select
             id="benchmark-select"
             value={selectedBenchmark}
             onChange={(e) => setSelectedBenchmark(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+            className="px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 text-sm"
+            style={{
+              borderColor: theme.colors.border,
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderRadius: theme.borderRadius,
+            }}
           >
             {BENCHMARK_OPTIONS.map(option => (
               <option key={option.value} value={option.value}>
@@ -352,27 +372,24 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
 
         {/* Legend */}
         <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#3b82f6]"></div>
-            <span className="text-gray-600">Anthropic</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#10b981]"></div>
-            <span className="text-gray-600">OpenAI</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#f59e0b]"></div>
-            <span className="text-gray-600">Google</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-[#8b5cf6]"></div>
-            <span className="text-gray-600">Meta</span>
-          </div>
+          {uniqueProviders.slice(0, 6).map(provider => (
+            <div key={provider} className="flex items-center gap-2">
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: getProviderColorFromTheme(provider, theme) }}
+              ></div>
+              <span style={{ color: theme.colors.muted }}>{provider}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* SVG Container */}
-      <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="rounded-lg p-4" style={{
+        backgroundColor: theme.colors.surface,
+        border: `1px solid ${theme.colors.border}`,
+        borderRadius: theme.borderRadius,
+      }}>
         <svg
           ref={svgRef}
           width={dimensions.width}
@@ -384,15 +401,21 @@ function ScatterPlot({ models, width = 800, height = 600 }: ScatterPlotProps) {
       {/* Tooltip */}
       <div
         ref={tooltipRef}
-        className="absolute pointer-events-none bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50"
-        style={{ display: 'none' }}
+        className="absolute pointer-events-none rounded-lg shadow-lg p-3 z-50"
+        style={{
+          display: 'none',
+          backgroundColor: theme.chartStyle.tooltipBg,
+          color: theme.chartStyle.tooltipText,
+          border: `1px solid ${theme.colors.border}`,
+          borderRadius: theme.borderRadius,
+        }}
       />
 
       {/* Info text */}
-      <div className="mt-4 text-sm text-gray-600">
+      <div className="mt-4 text-sm" style={{ color: theme.colors.muted }}>
         <p>
           <span className="font-medium">Circle size</span> represents parameter count.
-          <span className="font-medium ml-2">Green dashed line</span> shows the Pareto frontier (best value models).
+          <span className="font-medium ml-2">Dashed line</span> shows the Pareto frontier (best value models).
         </p>
       </div>
     </div>
