@@ -1,94 +1,121 @@
 import { Routes, Route, NavLink, Link } from 'react-router-dom'
-import Home from '@/pages/Home'
-import RadarView from '@/pages/RadarView'
-import TimelineView from '@/pages/TimelineView'
-import ScatterView from '@/pages/ScatterView'
-import ComparisonView from '@/pages/ComparisonView'
+import { useState, useEffect } from 'react'
+import Home from './pages/Home'
+import RadarView from './pages/RadarView'
+import TimelineView from './pages/TimelineView'
+import ScatterView from './pages/ScatterView'
+import ComparisonView from './pages/ComparisonView'
+import './styles.css'
+
+const navItems = [
+  { to: '/2', label: 'HOME', end: true },
+  { to: '/2/comparison', label: 'TABLE', end: false },
+  { to: '/2/radar', label: 'RADAR', end: false },
+  { to: '/2/timeline', label: 'TIMELINE', end: false },
+  { to: '/2/scatter', label: 'SCATTER', end: false },
+]
 
 function V2App() {
+  const [systemTime, setSystemTime] = useState('')
+  const [uptime, setUptime] = useState(0)
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date()
+      setSystemTime(
+        now.toLocaleTimeString('en-US', { hour12: false }) +
+        '.' +
+        String(now.getMilliseconds()).padStart(3, '0')
+      )
+    }
+    updateTime()
+    const interval = setInterval(updateTime, 100)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setUptime((prev) => prev + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const formatUptime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    const s = seconds % 60
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  }
+
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
-      {/* Navigation */}
-      <nav className="bg-gray-800 border-b border-gray-700">
-        <div className="container-custom">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <Link to="/" className="text-sm text-gray-400 hover:text-gray-200">
-                ← Variants
-              </Link>
-              <h1 className="text-xl font-bold text-purple-400">
-                Model Arena
-              </h1>
-              <div className="hidden md:flex space-x-4">
+    <div className="v2-synthwave min-h-screen flex flex-col">
+      {/* ====== SYSTEM STATUS BAR ====== */}
+      <div className="v2-status-bar">
+        <div className="flex items-center gap-3">
+          <span className="v2-status-dot" />
+          <span className="text-[#39FF14]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+            SYSTEM STATUS: ONLINE
+          </span>
+          <span className="text-[#2A2A4E]">│</span>
+          <span>NODE: ARENA-01</span>
+          <span className="text-[#2A2A4E]">│</span>
+          <span>PROC: NOMINAL</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span>UPTIME: {formatUptime(uptime)}</span>
+          <span className="text-[#2A2A4E]">│</span>
+          <span className="text-[#FF00FF]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            {systemTime}
+          </span>
+        </div>
+      </div>
+
+      {/* ====== NAVIGATION ====== */}
+      <nav className="v2-nav">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center h-12 gap-0">
+            {/* Back link */}
+            <Link
+              to="/"
+              className="text-[#4A4A6A] hover:text-[#FF00FF] text-xs uppercase tracking-[0.15em] mr-4 shrink-0"
+              style={{ fontFamily: "'IBM Plex Mono', monospace", textDecoration: 'none' }}
+            >
+              ← VARIANTS
+            </Link>
+
+            <span className="text-[#2A2A4E] mx-2 select-none">│</span>
+
+            {/* Site title */}
+            <span
+              className="text-[#FF00FF] font-bold text-xs uppercase tracking-[0.2em] mr-4 shrink-0 v2-glow-magenta"
+              style={{ fontFamily: "'Orbitron', sans-serif" }}
+            >
+              MODEL ARENA
+            </span>
+
+            <span className="text-[#2A2A4E] mx-2 select-none">│</span>
+
+            {/* Nav tabs */}
+            <div className="flex items-center overflow-x-auto">
+              {navItems.map((item) => (
                 <NavLink
-                  to="/2"
-                  end
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
                   className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'bg-purple-900/50 text-purple-300'
-                        : 'text-gray-300 hover:bg-gray-700'
-                    }`
+                    `v2-nav-tab ${isActive ? 'active' : ''}`
                   }
                 >
-                  Home
+                  {item.label}
                 </NavLink>
-                <NavLink
-                  to="/2/radar"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'bg-purple-900/50 text-purple-300'
-                        : 'text-gray-300 hover:bg-gray-700'
-                    }`
-                  }
-                >
-                  Radar Chart
-                </NavLink>
-                <NavLink
-                  to="/2/timeline"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'bg-purple-900/50 text-purple-300'
-                        : 'text-gray-300 hover:bg-gray-700'
-                    }`
-                  }
-                >
-                  Timeline
-                </NavLink>
-                <NavLink
-                  to="/2/scatter"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'bg-purple-900/50 text-purple-300'
-                        : 'text-gray-300 hover:bg-gray-700'
-                    }`
-                  }
-                >
-                  Scatter Plot
-                </NavLink>
-                <NavLink
-                  to="/2/comparison"
-                  className={({ isActive }) =>
-                    `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      isActive
-                        ? 'bg-purple-900/50 text-purple-300'
-                        : 'text-gray-300 hover:bg-gray-700'
-                    }`
-                  }
-                >
-                  Comparison Table
-                </NavLink>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="container-custom py-8">
+      {/* ====== MAIN CONTENT ====== */}
+      <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full">
         <Routes>
           <Route index element={<Home />} />
           <Route path="radar" element={<RadarView />} />
@@ -98,12 +125,17 @@ function V2App() {
         </Routes>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 mt-auto">
-        <div className="container-custom py-6">
-          <p className="text-center text-sm text-gray-400">
-            Variant 2: Dark Neon — Model Arena
-          </p>
+      {/* ====== FOOTER ====== */}
+      <footer className="v2-footer mt-auto">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em]">
+            <span className="text-[#4A4A6A]">
+              VARIANT 02 // RETRO-FUTURISTIC / SYNTHWAVE TERMINAL
+            </span>
+            <span className="text-[#2A2A4E]">
+              MODEL ARENA — LLM BENCHMARK VISUALIZATIONS
+            </span>
+          </div>
         </div>
       </footer>
     </div>
