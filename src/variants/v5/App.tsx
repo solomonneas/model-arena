@@ -5,15 +5,17 @@ import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
 import BarChartView from './pages/BarChartView'
+import DocsPage from '@/pages/DocsPage'
 import './styles.css'
 
 const navItems = [
-  { to: '/5', label: 'Ecosystem', icon: '🌿', end: true },
-  { to: '/5/radar', label: 'Radar', icon: '🌸', end: false },
-  { to: '/5/timeline', label: 'Timeline', icon: '🌱', end: false },
-  { to: '/5/scatter', label: 'Scatter', icon: '🍃', end: false },
-  { to: '/5/comparison', label: 'Compare', icon: '🌾', end: false },
-  { to: '/5/charts', label: 'Charts', icon: '📊', end: false },
+  { to: '/5', label: 'Ecosystem', icon: '🌿', end: true, tour: 'model-cards' },
+  { to: '/5/radar', label: 'Radar', icon: '🌸', end: false, tour: 'radar-chart' },
+  { to: '/5/timeline', label: 'Timeline', icon: '🌱', end: false, tour: '' },
+  { to: '/5/scatter', label: 'Scatter', icon: '🍃', end: false, tour: 'scatter-plot' },
+  { to: '/5/comparison', label: 'Compare', icon: '🌾', end: false, tour: 'comparison-table' },
+  { to: '/5/charts', label: 'Charts', icon: '📊', end: false, tour: 'bar-chart' },
+  { to: '/5/docs', label: 'Guide', icon: '📖', end: false, tour: '' },
 ]
 
 function WaveDivider() {
@@ -44,6 +46,7 @@ function V5App() {
         <div className="flex items-center max-w-6xl mx-auto px-2">
           <Link
             to="/"
+            data-tour="variant-picker"
             className="text-xs text-[#B8A88A] hover:text-[#2D5016] transition-all duration-500 mr-3 flex-shrink-0"
             style={{ fontFamily: "'Caveat', cursive", fontSize: '0.9rem' }}
           >
@@ -65,7 +68,7 @@ function V5App() {
             Model Arena
           </span>
 
-          <div className="flex items-center gap-1 overflow-x-auto">
+          <div className="flex items-center gap-1 overflow-x-auto" data-tour="chart-nav">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -74,6 +77,7 @@ function V5App() {
                 className={({ isActive }) =>
                   `v5-nav-link ${isActive ? 'active' : ''}`
                 }
+                {...(item.tour ? { 'data-tour': item.tour } : {})}
               >
                 <span style={{ fontSize: '0.85rem' }}>{item.icon}</span>
                 {item.label}
@@ -92,6 +96,7 @@ function V5App() {
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
           <Route path="charts" element={<BarChartView />} />
+          <Route path="docs" element={<DocsPage />} />
         </Routes>
       </main>
 

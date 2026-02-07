@@ -5,15 +5,17 @@ import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
 import BarChartView from './pages/BarChartView'
+import DocsPage from '@/pages/DocsPage'
 import './styles.css'
 
 const navItems = [
-  { to: '/1', label: 'HOME', end: true },
-  { to: '/1/comparison', label: 'TABLE', end: false },
-  { to: '/1/radar', label: 'RADAR', end: false },
-  { to: '/1/timeline', label: 'TIMELINE', end: false },
-  { to: '/1/scatter', label: 'SCATTER', end: false },
-  { to: '/1/bars', label: 'BARS', end: false },
+  { to: '/1', label: 'HOME', end: true, tour: 'model-cards' },
+  { to: '/1/comparison', label: 'TABLE', end: false, tour: 'comparison-table' },
+  { to: '/1/radar', label: 'RADAR', end: false, tour: 'radar-chart' },
+  { to: '/1/timeline', label: 'TIMELINE', end: false, tour: '' },
+  { to: '/1/scatter', label: 'SCATTER', end: false, tour: 'scatter-plot' },
+  { to: '/1/bars', label: 'BARS', end: false, tour: 'bar-chart' },
+  { to: '/1/docs', label: 'DOCS', end: false, tour: '' },
 ]
 
 function V1App() {
@@ -26,6 +28,7 @@ function V1App() {
             {/* Back link */}
             <Link
               to="/"
+              data-tour="variant-picker"
               className="text-[#555] hover:text-[#FFF] hover:bg-transparent text-xs uppercase tracking-[0.15em] mr-4 shrink-0"
             >
               ← VARIANTS
@@ -42,7 +45,7 @@ function V1App() {
             <span className="pipe text-[#333] mx-2 select-none">│</span>
 
             {/* Nav items */}
-            <div className="flex items-center overflow-x-auto">
+            <div className="flex items-center overflow-x-auto" data-tour="chart-nav">
               {navItems.map((item, i) => (
                 <div key={item.to} className="flex items-center shrink-0">
                   {i > 0 && <span className="pipe text-[#333] mx-2 select-none">|</span>}
@@ -52,6 +55,7 @@ function V1App() {
                     className={({ isActive }) =>
                       `px-2 py-1 ${isActive ? 'active text-[#FF6600]' : ''}`
                     }
+                    {...(item.tour ? { 'data-tour': item.tour } : {})}
                   >
                     {item.label}
                   </NavLink>
@@ -71,6 +75,7 @@ function V1App() {
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
           <Route path="bars" element={<BarChartView />} />
+          <Route path="docs" element={<DocsPage />} />
         </Routes>
       </main>
 

@@ -7,6 +7,7 @@ import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
 import BarChartView from './pages/BarChartView'
+import DocsPage from '@/pages/DocsPage'
 import './styles.css'
 import modelsData from '../../../data/models.json'
 
@@ -19,12 +20,13 @@ const topModel = [...models].sort((a, b) => calculateAverageBenchmark(b.benchmar
 const latestModel = [...models].sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())[0]
 
 const navItems = [
-  { to: '/4', label: 'OVERVIEW', icon: '◉', end: true },
-  { to: '/4/radar', label: 'RADAR', icon: '◎', end: false },
-  { to: '/4/timeline', label: 'TIMELINE', icon: '▸', end: false },
-  { to: '/4/scatter', label: 'SCATTER', icon: '⬡', end: false },
-  { to: '/4/comparison', label: 'DATA TABLE', icon: '≡', end: false },
-  { to: '/4/bars', label: 'BAR CHARTS', icon: '▥', end: false },
+  { to: '/4', label: 'OVERVIEW', icon: '◉', end: true, tour: 'model-cards' },
+  { to: '/4/radar', label: 'RADAR', icon: '◎', end: false, tour: 'radar-chart' },
+  { to: '/4/timeline', label: 'TIMELINE', icon: '▸', end: false, tour: '' },
+  { to: '/4/scatter', label: 'SCATTER', icon: '⬡', end: false, tour: 'scatter-plot' },
+  { to: '/4/comparison', label: 'DATA TABLE', icon: '≡', end: false, tour: 'comparison-table' },
+  { to: '/4/bars', label: 'BAR CHARTS', icon: '▥', end: false, tour: 'bar-chart' },
+  { to: '/4/docs', label: 'DOCS', icon: '◈', end: false, tour: '' },
 ]
 
 function V4App() {
@@ -72,6 +74,7 @@ function V4App() {
         <div className="flex items-center px-3">
           <Link
             to="/"
+            data-tour="variant-picker"
             className="text-xs text-[#475569] hover:text-[#3B82F6] transition-colors mr-3 py-2 flex-shrink-0"
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.65rem' }}
           >
@@ -89,7 +92,7 @@ function V4App() {
 
           <div className="w-px h-6 bg-[#1E3A5F] mr-1" />
 
-          <div className="flex items-stretch overflow-x-auto">
+          <div className="flex items-stretch overflow-x-auto" data-tour="chart-nav">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -98,6 +101,7 @@ function V4App() {
                 className={({ isActive }) =>
                   `v4-nav-link ${isActive ? 'active' : ''}`
                 }
+                {...(item.tour ? { 'data-tour': item.tour } : {})}
               >
                 <span className="nav-icon">{item.icon}</span>
                 {item.label}
@@ -116,6 +120,7 @@ function V4App() {
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
           <Route path="bars" element={<BarChartView />} />
+          <Route path="docs" element={<DocsPage />} />
         </Routes>
       </main>
 

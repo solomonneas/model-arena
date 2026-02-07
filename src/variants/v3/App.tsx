@@ -5,15 +5,17 @@ import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
 import BarChartView from './pages/BarChartView'
+import DocsPage from '@/pages/DocsPage'
 import './styles.css'
 
 const navItems = [
-  { to: '/3', label: 'Home', end: true },
-  { to: '/3/comparison', label: 'Compendium', end: false },
-  { to: '/3/radar', label: 'Radar', end: false },
-  { to: '/3/timeline', label: 'Chronicle', end: false },
-  { to: '/3/scatter', label: 'Value', end: false },
-  { to: '/3/charts', label: 'Charts', end: false },
+  { to: '/3', label: 'Home', end: true, tour: 'model-cards' },
+  { to: '/3/comparison', label: 'Compendium', end: false, tour: 'comparison-table' },
+  { to: '/3/radar', label: 'Radar', end: false, tour: 'radar-chart' },
+  { to: '/3/timeline', label: 'Chronicle', end: false, tour: '' },
+  { to: '/3/scatter', label: 'Value', end: false, tour: 'scatter-plot' },
+  { to: '/3/charts', label: 'Charts', end: false, tour: 'bar-chart' },
+  { to: '/3/docs', label: 'Guide', end: false, tour: '' },
 ]
 
 function V3App() {
@@ -26,6 +28,7 @@ function V3App() {
             {/* Left: back link */}
             <Link
               to="/"
+              data-tour="variant-picker"
               className="v3-label text-xs hover:text-[#C9A96E] transition-colors duration-400"
               style={{ textDecoration: 'none', fontSize: '0.6rem', letterSpacing: '0.15em' }}
             >
@@ -44,7 +47,7 @@ function V3App() {
             </div>
 
             {/* Right: nav links */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-8" data-tour="chart-nav">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
@@ -53,6 +56,7 @@ function V3App() {
                   className={({ isActive }) =>
                     `v3-nav-link ${isActive ? 'active' : ''}`
                   }
+                  {...(item.tour ? { 'data-tour': item.tour } : {})}
                 >
                   {item.label}
                 </NavLink>
@@ -88,6 +92,7 @@ function V3App() {
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
           <Route path="charts" element={<BarChartView />} />
+          <Route path="docs" element={<DocsPage />} />
         </Routes>
       </main>
 

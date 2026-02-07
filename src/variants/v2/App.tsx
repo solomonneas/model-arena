@@ -6,15 +6,17 @@ import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
 import BarChartView from './pages/BarChartView'
+import DocsPage from '@/pages/DocsPage'
 import './styles.css'
 
 const navItems = [
-  { to: '/2', label: 'HOME', end: true },
-  { to: '/2/comparison', label: 'TABLE', end: false },
-  { to: '/2/radar', label: 'RADAR', end: false },
-  { to: '/2/timeline', label: 'TIMELINE', end: false },
-  { to: '/2/scatter', label: 'SCATTER', end: false },
-  { to: '/2/charts', label: 'CHARTS', end: false },
+  { to: '/2', label: 'HOME', end: true, tour: 'model-cards' },
+  { to: '/2/comparison', label: 'TABLE', end: false, tour: 'comparison-table' },
+  { to: '/2/radar', label: 'RADAR', end: false, tour: 'radar-chart' },
+  { to: '/2/timeline', label: 'TIMELINE', end: false, tour: '' },
+  { to: '/2/scatter', label: 'SCATTER', end: false, tour: 'scatter-plot' },
+  { to: '/2/charts', label: 'CHARTS', end: false, tour: 'bar-chart' },
+  { to: '/2/docs', label: 'DOCS', end: false, tour: '' },
 ]
 
 function V2App() {
@@ -79,6 +81,7 @@ function V2App() {
             {/* Back link */}
             <Link
               to="/"
+              data-tour="variant-picker"
               className="text-[#4A4A6A] hover:text-[#FF00FF] text-xs uppercase tracking-[0.15em] mr-4 shrink-0"
               style={{ fontFamily: "'IBM Plex Mono', monospace", textDecoration: 'none' }}
             >
@@ -98,7 +101,7 @@ function V2App() {
             <span className="text-[#2A2A4E] mx-2 select-none">│</span>
 
             {/* Nav tabs */}
-            <div className="flex items-center overflow-x-auto">
+            <div className="flex items-center overflow-x-auto" data-tour="chart-nav">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
@@ -107,6 +110,7 @@ function V2App() {
                   className={({ isActive }) =>
                     `v2-nav-tab ${isActive ? 'active' : ''}`
                   }
+                  {...(item.tour ? { 'data-tour': item.tour } : {})}
                 >
                   {item.label}
                 </NavLink>
@@ -125,6 +129,7 @@ function V2App() {
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
           <Route path="charts" element={<BarChartView />} />
+          <Route path="docs" element={<DocsPage />} />
         </Routes>
       </main>
 
