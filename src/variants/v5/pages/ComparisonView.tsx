@@ -233,7 +233,7 @@ function ComparisonView() {
                 <SortHeader field="context_window" label="Context" className="text-right" />
                 <SortHeader field="avg" label="Avg" className="text-right" />
                 {BENCHMARK_FIELDS.map(field => (
-                  <SortHeader key={field} field={field} label={field.length > 7 ? field.substring(0, 6) : field} className="text-right" />
+                  <SortHeader key={field} field={field as SortField} label={field.length > 7 ? field.substring(0, 6) : field} className="text-right" />
                 ))}
                 <SortHeader field="price_input" label="In $" className="text-right" />
                 <SortHeader field="price_output" label="Out $" className="text-right" />

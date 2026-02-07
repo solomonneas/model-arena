@@ -110,7 +110,7 @@ function EcosystemView() {
     >
       <BlobBackground />
 
-      {bubbles.map(({ model, x, y, size, avg }, i) => {
+      {bubbles.map(({ model, x, y, size }, i) => {
         const color = providerColors[model.provider] || '#8B7355'
         const isHovered = hoveredModel?.id === model.id
 
@@ -349,7 +349,7 @@ function Home() {
               <span className="v5-heading v5-heading-sm">Recent Sprouts</span>
             </div>
             <div className="space-y-2">
-              {latestModels.map((model, i) => (
+              {latestModels.map((model) => (
                 <div key={model.id} className="flex items-center justify-between">
                   <div>
                     <div style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: '0.78rem', fontWeight: 700, color: '#3E2723' }}>

@@ -4,6 +4,7 @@ import RadarView from './pages/RadarView'
 import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
+import BarChartView from './pages/BarChartView'
 import './styles.css'
 
 const navItems = [
@@ -12,6 +13,7 @@ const navItems = [
   { to: '/1/radar', label: 'RADAR', end: false },
   { to: '/1/timeline', label: 'TIMELINE', end: false },
   { to: '/1/scatter', label: 'SCATTER', end: false },
+  { to: '/1/bars', label: 'BARS', end: false },
 ]
 
 function V1App() {
@@ -68,6 +70,7 @@ function V1App() {
           <Route path="timeline" element={<TimelineView />} />
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
+          <Route path="bars" element={<BarChartView />} />
         </Routes>
       </main>
 

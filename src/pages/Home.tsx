@@ -118,7 +118,7 @@ function Home() {
           <div className="text-gray-600">Providers</div>
         </div>
         <div className="card text-center">
-          <div className="text-3xl font-bold text-primary-600 mb-2">7</div>
+          <div className="text-3xl font-bold text-primary-600 mb-2">8</div>
           <div className="text-gray-600">Benchmarks</div>
         </div>
         <div className="card text-center">

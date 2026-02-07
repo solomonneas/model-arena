@@ -281,7 +281,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
       .transition()
       .duration(800)
       .delay((_, i) => i * 20)
-      .attr('r', d => d.parameterSize ? sizeScale(d.parameterSize) : 8)
+      .attr('r', (d: any) => d.parameterSize ? sizeScale(d.parameterSize) : 8)
 
     // Tooltip handling via React state (no D3 .html() to avoid XSS)
     dots
@@ -308,7 +308,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
           .duration(200)
           .attr('opacity', 0.8)
           .attr('stroke-width', 2)
-          .attr('r', d => d.parameterSize ? sizeScale(d.parameterSize) : 8)
+          .attr('r', (d: any) => d.parameterSize ? sizeScale(d.parameterSize) : 8)
 
         setHoveredPoint(null)
       })

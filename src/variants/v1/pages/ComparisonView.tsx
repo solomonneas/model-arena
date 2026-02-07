@@ -170,7 +170,7 @@ function ComparisonView() {
               <SortHeader field="parameters" label="PARAMS" />
               <SortHeader field="context_window" label="CTX" />
               {BENCHMARK_FIELDS.map(field => (
-                <SortHeader key={field} field={field} label={field} />
+                <SortHeader key={field} field={field as SortField} label={field} />
               ))}
               <SortHeader field="price_input" label="IN $/1M" />
               <SortHeader field="price_output" label="OUT $/1M" />

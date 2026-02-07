@@ -4,6 +4,7 @@ import RadarView from './pages/RadarView'
 import TimelineView from './pages/TimelineView'
 import ScatterView from './pages/ScatterView'
 import ComparisonView from './pages/ComparisonView'
+import BarChartView from './pages/BarChartView'
 import './styles.css'
 
 const navItems = [
@@ -12,6 +13,7 @@ const navItems = [
   { to: '/5/timeline', label: 'Timeline', icon: '🌱', end: false },
   { to: '/5/scatter', label: 'Scatter', icon: '🍃', end: false },
   { to: '/5/comparison', label: 'Compare', icon: '🌾', end: false },
+  { to: '/5/charts', label: 'Charts', icon: '📊', end: false },
 ]
 
 function WaveDivider() {
@@ -89,6 +91,7 @@ function V5App() {
           <Route path="timeline" element={<TimelineView />} />
           <Route path="scatter" element={<ScatterView />} />
           <Route path="comparison" element={<ComparisonView />} />
+          <Route path="charts" element={<BarChartView />} />
         </Routes>
       </main>
 

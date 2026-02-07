@@ -27,3 +27,26 @@ Add all of these with accurate benchmark data, pricing, and capability compariso
 ## Other Notes
 - Review existing model data for accuracy (benchmarks may be outdated)
 - Ensure comparison charts/visualizations scale with the added models
+
+## Polish Pass Needed (2026-02-07)
+
+### What's Good (Keep)
+- Multiple frontend variants - user likes having different design options
+
+### What Needs Fixing
+1. **Model data accuracy** - Many parameters are wrong/missing
+   - Example: Opus 4.6 listed as released 2026-01-20 (incorrect)
+   - Need to verify ALL model release dates, parameter counts, context windows, pricing
+2. **Missing parameters** - Models need more complete specs
+   - Training data cutoff dates
+   - Supported modalities (text, image, audio, video)
+   - API pricing (input/output per MTok)
+   - Max output tokens
+   - Reasoning/thinking support
+   - Function calling / tool use support
+3. **More visualizations** - Add more bar charts
+   - Context window comparison
+   - Pricing comparison (input vs output)
+   - Benchmark scores (if available)
+   - Parameter count comparison
+   - Speed/latency comparison
