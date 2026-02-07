@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
-import { Model } from '@/types/model'
+import { Model, ModelBenchmarks } from '@/types/model'
 import { formatNumber, formatPrice } from '@/utils/formatters'
+import { BENCHMARK_FIELDS } from '@/data/constants'
 
 interface ComparisonTableProps {
   models: Model[]
@@ -9,14 +10,10 @@ interface ComparisonTableProps {
 }
 
 type SortField = 'name' | 'provider' | 'parameters' | 'context_window' |
-  'MMLU' | 'HumanEval' | 'MATH' | 'GSM8K' | 'GPQA' | 'HellaSwag' | 'ARC' | 'TruthfulQA' |
+  keyof ModelBenchmarks |
   'price_input' | 'price_output'
 
 type SortDirection = 'asc' | 'desc'
-
-const BENCHMARK_FIELDS: Array<keyof Model['benchmarks']> = [
-  'MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA', 'HellaSwag', 'ARC', 'TruthfulQA'
-]
 
 function ComparisonTable({ models, onModelSelect, selectedModels = [] }: ComparisonTableProps) {
   const [sortField, setSortField] = useState<SortField>('MMLU')
@@ -47,39 +44,38 @@ function ComparisonTable({ models, onModelSelect, selectedModels = [] }: Compari
       filtered = filtered.filter(m => selectedProviders.includes(m.provider))
     }
 
+    // Type-safe sort value getters
+    const getStringValue = (model: Model, field: 'name' | 'provider' | 'parameters'): string =>
+      model[field].toLowerCase()
+
+    const getNumericValue = (model: Model, field: SortField): number => {
+      switch (field) {
+        case 'context_window':
+          return model.context_window
+        case 'price_input':
+          return model.pricing.input
+        case 'price_output':
+          return model.pricing.output
+        default:
+          return model.benchmarks[field as keyof ModelBenchmarks] ?? 0
+      }
+    }
+
     // Sort
     const sorted = [...filtered].sort((a, b) => {
-      let aVal: any
-      let bVal: any
+      let comparison: number
 
-      switch (sortField) {
-        case 'name':
-        case 'provider':
-        case 'parameters':
-          aVal = a[sortField].toLowerCase()
-          bVal = b[sortField].toLowerCase()
-          break
-        case 'context_window':
-          aVal = a.context_window
-          bVal = b.context_window
-          break
-        case 'price_input':
-          aVal = a.pricing.input
-          bVal = b.pricing.input
-          break
-        case 'price_output':
-          aVal = a.pricing.output
-          bVal = b.pricing.output
-          break
-        default:
-          // Benchmark fields
-          aVal = a.benchmarks[sortField as keyof Model['benchmarks']]
-          bVal = b.benchmarks[sortField as keyof Model['benchmarks']]
+      if (sortField === 'name' || sortField === 'provider' || sortField === 'parameters') {
+        const aStr = getStringValue(a, sortField)
+        const bStr = getStringValue(b, sortField)
+        comparison = aStr.localeCompare(bStr)
+      } else {
+        const aNum = getNumericValue(a, sortField)
+        const bNum = getNumericValue(b, sortField)
+        comparison = aNum - bNum
       }
 
-      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1
-      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1
-      return 0
+      return sortDirection === 'asc' ? comparison : -comparison
     })
 
     return sorted

@@ -27,7 +27,7 @@ Each variant is a fully independent frontend with its own layout, typography, co
 ## Tech Stack
 
 - **React 18** with TypeScript
-- **Recharts** for data visualizations
+- **D3.js** for data visualizations (radar charts, scatter plots, timelines)
 - **Tailwind CSS** for utility styling
 - **React Router** for variant routing (`/1` through `/5`)
 - **Vite** for builds
@@ -44,11 +44,14 @@ npm run build     # Production build
 ## Project Structure
 
 ```
+data/
+└── models.json     # Model benchmark data
 src/
-├── components/     # Shared visualization components
-├── data/          # Model benchmark data (models.json)
+├── components/     # Shared visualization components (D3-based)
+├── data/          # Shared constants and config
 ├── types/         # TypeScript interfaces
 ├── pages/         # Variant picker landing
+├── utils/         # Formatting and helper utilities
 ├── variants/
 │   ├── v1/        # Brutalist
 │   ├── v2/        # Synthwave Terminal

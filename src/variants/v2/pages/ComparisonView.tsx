@@ -1,16 +1,13 @@
 import { useState, useMemo } from 'react'
 import { Model } from '@/types/model'
 import { formatNumber, formatPrice } from '@/utils/formatters'
+import { BENCHMARK_FIELDS } from '@/data/constants'
 import modelsData from '../../../../data/models.json'
 
 type SortField = 'name' | 'provider' | 'parameters' | 'context_window' |
   'MMLU' | 'HumanEval' | 'MATH' | 'GSM8K' | 'GPQA' | 'HellaSwag' | 'ARC' | 'TruthfulQA' |
   'price_input' | 'price_output'
 type SortDirection = 'asc' | 'desc'
-
-const BENCHMARK_FIELDS: Array<keyof Model['benchmarks']> = [
-  'MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA', 'HellaSwag', 'ARC', 'TruthfulQA'
-]
 
 const models: Model[] = modelsData.models
 

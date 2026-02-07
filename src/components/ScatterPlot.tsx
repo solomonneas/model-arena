@@ -4,6 +4,7 @@ import { Model } from '@/types/model'
 import { parseParameters } from '@/utils/timeline'
 import { formatPrice } from '@/utils/formatters'
 import { VariantTheme, defaultTheme } from '@/types/theme'
+import { BENCHMARK_OPTIONS } from '@/data/constants'
 
 interface ScatterPlotProps {
   models: Model[]
@@ -20,17 +21,6 @@ interface ScatterDataPoint {
   provider: string
 }
 
-const BENCHMARK_OPTIONS = [
-  { value: 'MMLU', label: 'MMLU (Knowledge)' },
-  { value: 'HumanEval', label: 'HumanEval (Coding)' },
-  { value: 'MATH', label: 'MATH (Mathematics)' },
-  { value: 'GSM8K', label: 'GSM8K (Math Reasoning)' },
-  { value: 'GPQA', label: 'GPQA (Graduate Science)' },
-  { value: 'HellaSwag', label: 'HellaSwag (Common Sense)' },
-  { value: 'ARC', label: 'ARC (Question Answering)' },
-  { value: 'TruthfulQA', label: 'TruthfulQA (Truthfulness)' },
-]
-
 function getProviderColorFromTheme(provider: string, theme: VariantTheme): string {
   return theme.colors.providerColors[provider] || '#6b7280'
 }
@@ -38,9 +28,12 @@ function getProviderColorFromTheme(provider: string, theme: VariantTheme): strin
 function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }: ScatterPlotProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const tooltipRef = useRef<HTMLDivElement>(null)
   const [selectedBenchmark, setSelectedBenchmark] = useState('MMLU')
-  const [_hoveredModel, setHoveredModel] = useState<string | null>(null)
+  const [hoveredPoint, setHoveredPoint] = useState<{
+    data: ScatterDataPoint
+    x: number
+    y: number
+  } | null>(null)
   const [dimensions, setDimensions] = useState({ width, height })
 
   // Handle responsive sizing
@@ -290,13 +283,9 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
       .delay((_, i) => i * 20)
       .attr('r', d => d.parameterSize ? sizeScale(d.parameterSize) : 8)
 
-    // Tooltip handling
-    const tooltip = d3.select(tooltipRef.current)
-
+    // Tooltip handling via React state (no D3 .html() to avoid XSS)
     dots
       .on('mouseover', function (event, d) {
-        setHoveredModel(d.model.id)
-
         d3.select(this)
           .transition()
           .duration(200)
@@ -304,29 +293,16 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
           .attr('stroke-width', 3)
           .attr('r', (d.parameterSize ? sizeScale(d.parameterSize) : 8) * 1.3)
 
-        tooltip
-          .style('display', 'block')
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 10}px`)
-          .html(`
-            <div class="font-semibold mb-1">${d.model.name}</div>
-            <div class="text-sm mb-2" style="color: ${theme.colors.muted}">${d.provider}</div>
-            <div class="text-xs space-y-1">
-              <div><span class="font-medium">Price:</span> ${formatPrice(d.price)}/1M tokens</div>
-              <div><span class="font-medium">${selectedBenchmark}:</span> ${d.benchmarkScore.toFixed(1)}</div>
-              ${d.parameterSize ? `<div><span class="font-medium">Parameters:</span> ${d.parameterSize}B</div>` : ''}
-              <div><span class="font-medium">Context:</span> ${(d.model.context_window / 1000).toFixed(0)}K tokens</div>
-            </div>
-          `)
+        setHoveredPoint({
+          data: d,
+          x: event.pageX + 10,
+          y: event.pageY - 10,
+        })
       })
       .on('mousemove', function (event) {
-        tooltip
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 10}px`)
+        setHoveredPoint(prev => prev ? { ...prev, x: event.pageX + 10, y: event.pageY - 10 } : null)
       })
       .on('mouseout', function () {
-        setHoveredModel(null)
-
         d3.select(this)
           .transition()
           .duration(200)
@@ -334,7 +310,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
           .attr('stroke-width', 2)
           .attr('r', d => d.parameterSize ? sizeScale(d.parameterSize) : 8)
 
-        tooltip.style('display', 'none')
+        setHoveredPoint(null)
       })
 
   }, [models, selectedBenchmark, dimensions, theme])
@@ -398,18 +374,45 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
         />
       </div>
 
-      {/* Tooltip */}
-      <div
-        ref={tooltipRef}
-        className="absolute pointer-events-none rounded-lg shadow-lg p-3 z-50"
-        style={{
-          display: 'none',
-          backgroundColor: theme.chartStyle.tooltipBg,
-          color: theme.chartStyle.tooltipText,
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: theme.borderRadius,
-        }}
-      />
+      {/* React-rendered tooltip (XSS-safe) */}
+      {hoveredPoint && (
+        <div
+          className="fixed pointer-events-none rounded-lg shadow-lg p-3 z-50"
+          style={{
+            left: hoveredPoint.x,
+            top: hoveredPoint.y,
+            backgroundColor: theme.chartStyle.tooltipBg,
+            color: theme.chartStyle.tooltipText,
+            border: `1px solid ${theme.colors.border}`,
+            borderRadius: theme.borderRadius,
+          }}
+        >
+          <div className="font-semibold mb-1">{hoveredPoint.data.model.name}</div>
+          <div className="text-sm mb-2" style={{ color: theme.colors.muted }}>
+            {hoveredPoint.data.provider}
+          </div>
+          <div className="text-xs space-y-1">
+            <div>
+              <span className="font-medium">Price:</span>{' '}
+              {formatPrice(hoveredPoint.data.price)}/1M tokens
+            </div>
+            <div>
+              <span className="font-medium">{selectedBenchmark}:</span>{' '}
+              {hoveredPoint.data.benchmarkScore.toFixed(1)}
+            </div>
+            {hoveredPoint.data.parameterSize && (
+              <div>
+                <span className="font-medium">Parameters:</span>{' '}
+                {hoveredPoint.data.parameterSize}B
+              </div>
+            )}
+            <div>
+              <span className="font-medium">Context:</span>{' '}
+              {(hoveredPoint.data.model.context_window / 1000).toFixed(0)}K tokens
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Info text */}
       <div className="mt-4 text-sm" style={{ color: theme.colors.muted }}>

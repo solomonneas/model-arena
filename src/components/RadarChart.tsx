@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import * as d3 from 'd3'
 import { Model } from '@/types/model'
 import { VariantTheme, defaultTheme } from '@/types/theme'
+import { RADAR_AXES, DEFAULT_MODEL_COLORS } from '@/data/constants'
 
 interface RadarChartProps {
   models: Model[]
@@ -16,26 +17,19 @@ interface RadarDataPoint {
   model: Model
 }
 
-const RADAR_AXES = ['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA']
-
-// Default color palette for up to 4 models
-const DEFAULT_MODEL_COLORS = [
-  '#3b82f6', // blue
-  '#10b981', // green
-  '#f59e0b', // amber
-  '#ef4444', // red
-]
-
 function RadarChart({ models, width = 600, height = 600, theme = defaultTheme }: RadarChartProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [hoveredModel, setHoveredModel] = useState<string | null>(null)
   const [dimensions, setDimensions] = useState({ width, height })
 
-  // Derive model colors from theme provider colors or use defaults
-  const modelColors = models.slice(0, 4).map((model, index) => {
-    return theme.colors.providerColors[model.provider] || DEFAULT_MODEL_COLORS[index]
-  })
+  // Memoize model colors to avoid recreating on every render and causing useEffect reruns
+  const modelColors = useMemo(
+    () => models.slice(0, 4).map((model, index) => {
+      return theme.colors.providerColors[model.provider] || DEFAULT_MODEL_COLORS[index]
+    }),
+    [models, theme.colors.providerColors]
+  )
 
   // Handle responsive sizing
   useEffect(() => {
