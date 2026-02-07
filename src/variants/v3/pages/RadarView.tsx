@@ -147,7 +147,7 @@ function RadarView() {
                     )}
                   </div>
                   <div className="space-y-1">
-                    {['MMLU', 'HumanEval', 'MATH'].map(bench => (
+                    {(['MMLU', 'HumanEval', 'MATH'] as const).map(bench => (
                       <div key={bench} className="flex justify-between" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.7rem' }}>
                         <span style={{ color: '#B8B0A4' }}>{bench}</span>
                         <span style={{ color: '#7A7A7A' }}>{model.benchmarks[bench].toFixed(1)}</span>

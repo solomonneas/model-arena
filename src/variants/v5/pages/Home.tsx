@@ -325,7 +325,7 @@ function Home() {
               </div>
             </div>
             <div className="space-y-1.5 mt-3">
-              {['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'].map(key => (
+              {(['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'] as const).map(key => (
                 <div key={key} className="flex items-center gap-2">
                   <span style={{ fontFamily: "'Caveat', cursive", fontSize: '0.8rem', color: '#B8A88A', width: '65px', flexShrink: 0 }}>{key}</span>
                   <div className="flex-1 v5-minibar">

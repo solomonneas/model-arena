@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import BarChart from '@/components/BarChart'
 import { editorialTheme } from '../theme'
 import { BENCHMARK_OPTIONS } from '@/data/constants'
@@ -18,7 +18,7 @@ const MODE_OPTIONS: Array<{ value: ChartMode; label: string }> = [
 
 function BarChartView() {
   const [mode, setMode] = useState<ChartMode>('benchmark')
-  const [selectedBenchmark, setSelectedBenchmark] = useState('MMLU')
+  const [selectedBenchmark, setSelectedBenchmark] = useState<BenchmarkKey>('MMLU')
 
   return (
     <div className="max-w-5xl mx-auto px-8 md:px-12 py-12">
@@ -81,7 +81,7 @@ function BarChartView() {
             </label>
             <select
               value={selectedBenchmark}
-              onChange={(e) => setSelectedBenchmark(e.target.value)}
+              onChange={(e) => setSelectedBenchmark(e.target.value as BenchmarkKey)}
               className="text-sm px-4 py-2 border border-[#E8E2D8] focus:border-[#C9A96E] outline-none transition-all duration-300"
               style={{
                 fontFamily: "'Cormorant Garamond', Garamond, serif",

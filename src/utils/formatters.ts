@@ -33,7 +33,7 @@ export function formatPrice(price: number): string {
 /**
  * Calculate average benchmark score
  */
-export function calculateAverageBenchmark(benchmarks: Record<string, number>): number {
+export function calculateAverageBenchmark(benchmarks: { [key: string]: number }): number {
   const values = Object.values(benchmarks)
   const sum = values.reduce((acc, val) => acc + val, 0)
   return sum / values.length

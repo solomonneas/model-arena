@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import BarChart from '@/components/BarChart'
 import { brutalistTheme } from '../theme'
 import { BENCHMARK_OPTIONS } from '@/data/constants'
@@ -8,7 +8,7 @@ import modelsData from '../../../../data/models.json'
 const models: Model[] = modelsData.models
 
 function BarChartView() {
-  const [selectedBenchmark, setSelectedBenchmark] = useState('MMLU')
+  const [selectedBenchmark, setSelectedBenchmark] = useState<BenchmarkKey>('MMLU')
 
   return (
     <div>
@@ -28,7 +28,7 @@ function BarChartView() {
           </span>
           <select
             value={selectedBenchmark}
-            onChange={(e) => setSelectedBenchmark(e.target.value)}
+            onChange={(e) => setSelectedBenchmark(e.target.value as BenchmarkKey)}
             className="v1-input text-xs px-2 py-1"
           >
             {BENCHMARK_OPTIONS.map(opt => (

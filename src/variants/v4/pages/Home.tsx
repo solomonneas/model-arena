@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import { formatNumber, formatPrice, calculateAverageBenchmark } from '@/utils/formatters'
 import modelsData from '../../../../data/models.json'
 
 const models: Model[] = modelsData.models
 
 const providers = [...new Set(models.map(m => m.provider))]
-const benchmarkKeys = ['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA', 'HellaSwag', 'ARC', 'TruthfulQA']
+const benchmarkKeys: BenchmarkKey[] = ['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA', 'HellaSwag', 'ARC', 'TruthfulQA']
 const maxContext = Math.max(...models.map(m => m.context_window))
 const topModels = [...models].sort((a, b) => calculateAverageBenchmark(b.benchmarks) - calculateAverageBenchmark(a.benchmarks))
 const topModel = topModels[0]
@@ -174,7 +174,7 @@ function Home() {
                 </div>
               </div>
               <div className="space-y-1.5 mt-3">
-                {['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'].map(key => (
+                {(['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'] as const).map(key => (
                   <div key={key} className="flex items-center justify-between gap-2">
                     <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', color: '#64748B', width: '70px' }}>{key}</span>
                     <div className="flex-1"><ScoreBar value={topModel.benchmarks[key]} color={getScoreTier(topModel.benchmarks[key]).includes('excellent') ? '#22C55E' : '#3B82F6'} /></div>

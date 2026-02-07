@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import { formatNumber } from '@/utils/formatters'
 import modelsData from '../../../../data/models.json'
 
@@ -7,7 +7,7 @@ const models: Model[] = modelsData.models
 
 // Pre-compute stats
 const providers = [...new Set(models.map(m => m.provider))]
-const benchmarkKeys = ['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA', 'HellaSwag', 'ARC', 'TruthfulQA']
+const benchmarkKeys: BenchmarkKey[] = ['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA', 'HellaSwag', 'ARC', 'TruthfulQA']
 const maxContext = Math.max(...models.map(m => m.context_window))
 const avgMMLU = (models.reduce((s, m) => s + m.benchmarks.MMLU, 0) / models.length).toFixed(1)
 const topModel = [...models].sort((a, b) => b.benchmarks.MMLU - a.benchmarks.MMLU)[0]

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import { VariantTheme, defaultTheme } from '@/types/theme'
 import { BENCHMARK_OPTIONS } from '@/data/constants'
 
@@ -12,7 +12,7 @@ interface BarChartProps {
   /** Which data to display */
   mode?: 'benchmark' | 'context' | 'pricing' | 'output_price'
   /** For benchmark mode, which benchmark to show */
-  benchmarkField?: string
+  benchmarkField?: BenchmarkKey
   /** Max models to show (default 15) */
   maxModels?: number
   /** Sort direction */
@@ -39,7 +39,7 @@ function BarChart({
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width, height })
-  const [hoveredBar, setHoveredBar] = useState<string | null>(null)
+  const [, setHoveredBar] = useState<string | null>(null)
 
   useEffect(() => {
     const handleResize = () => {
@@ -252,7 +252,7 @@ function BarChart({
       .attr('fill', theme.colors.muted)
       .text(getLabel())
 
-  }, [models, dimensions, mode, benchmarkField, maxModels, sortDirection, theme, hoveredBar])
+  }, [models, dimensions, mode, benchmarkField, maxModels, sortDirection, theme])
 
   return (
     <div ref={containerRef} className="w-full">

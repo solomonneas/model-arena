@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import { parseParameters } from '@/utils/timeline'
 import { formatPrice } from '@/utils/formatters'
 import { VariantTheme, defaultTheme } from '@/types/theme'
@@ -28,7 +28,7 @@ function getProviderColorFromTheme(provider: string, theme: VariantTheme): strin
 function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }: ScatterPlotProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [selectedBenchmark, setSelectedBenchmark] = useState('MMLU')
+  const [selectedBenchmark, setSelectedBenchmark] = useState<BenchmarkKey>('MMLU')
   const [hoveredPoint, setHoveredPoint] = useState<{
     data: ScatterDataPoint
     x: number
@@ -329,7 +329,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
           <select
             id="benchmark-select"
             value={selectedBenchmark}
-            onChange={(e) => setSelectedBenchmark(e.target.value)}
+            onChange={(e) => setSelectedBenchmark(e.target.value as BenchmarkKey)}
             className="px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 text-sm"
             style={{
               borderColor: theme.colors.border,

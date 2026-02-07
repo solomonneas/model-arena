@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import * as d3 from 'd3'
 import { Model } from '@/types/model'
 import {
@@ -35,6 +35,16 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
   const [currentDate, setCurrentDate] = useState<Date | null>(null)
   const [tooltip, setTooltip] = useState<TooltipData | null>(null)
   const animationRef = useRef<number | null>(null)
+  // Refs to store D3 scene elements for incremental updates
+  const sceneRef = useRef<{
+    timelineData: TimelineDataPoint[]
+    families: ReturnType<typeof groupModelFamilies>
+    xScale: d3.ScaleTime<number, number>
+    yScale: d3.ScaleLinear<number, number>
+    sizeScale: d3.ScalePower<number, number>
+    isMobile: boolean
+    g: d3.Selection<SVGGElement, unknown, null, undefined>
+  } | null>(null)
 
   // Handle responsive sizing
   useEffect(() => {
@@ -53,7 +63,12 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Animation loop
+  // Animation loop — uses ref to avoid triggering D3 rebuild
+  const currentDateRef = useRef<Date | null>(null)
+  useEffect(() => {
+    currentDateRef.current = currentDate
+  }, [currentDate])
+
   useEffect(() => {
     if (!isPlaying) {
       if (animationRef.current) {
@@ -71,7 +86,7 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
     const duration = 5000 // 5 seconds for full animation
 
     const startTime = Date.now()
-    const startValue = currentDate ? currentDate.getTime() : minDate
+    const startValue = currentDateRef.current ? currentDateRef.current.getTime() : minDate
 
     const animate = () => {
       const elapsed = Date.now() - startTime
@@ -97,6 +112,52 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
     }
   }, [isPlaying, models])
 
+  // Incremental update: toggle dot/line visibility based on currentDate (no SVG rebuild)
+  const updateVisibility = useCallback((date: Date | null) => {
+    const scene = sceneRef.current
+    if (!scene) return
+    const { xScale, yScale, sizeScale, isMobile, g } = scene
+
+    const line = d3
+      .line<TimelineDataPoint>()
+      .x(d => xScale(d.date))
+      .y(d => yScale(d.averageScore))
+      .curve(d3.curveMonotoneX)
+
+    // Update dots: show/hide based on date
+    g.selectAll<SVGCircleElement, TimelineDataPoint>('.model-dot')
+      .each(function (d) {
+        const visible = date ? d.date <= date : true
+        const el = d3.select(this)
+        const targetR = d.parameterSize ? sizeScale(d.parameterSize) : (isMobile ? 6 : 8)
+        const currentR = parseFloat(el.attr('r')) || 0
+        if (visible && currentR === 0) {
+          // Appear
+          el.attr('opacity', 0.85)
+            .transition().duration(300)
+            .attr('r', targetR)
+        } else if (!visible && currentR > 0) {
+          // Hide
+          el.attr('r', 0).attr('opacity', 0)
+        }
+      })
+
+    // Update family lines
+    g.selectAll<SVGPathElement, ReturnType<typeof groupModelFamilies>[number]>('.family-line')
+      .each(function (family) {
+        const visibleModels = date
+          ? family.models.filter(m => m.date <= date)
+          : family.models
+
+        if (visibleModels.length < 2) {
+          d3.select(this).attr('d', null)
+        } else {
+          d3.select(this).attr('d', line(visibleModels))
+        }
+      })
+  }, [])
+
+  // Build the persistent D3 scene (only on models/dimensions/theme change)
   useEffect(() => {
     if (!svgRef.current || models.length === 0) return
 
@@ -204,50 +265,22 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
       .selectAll('line')
       .attr('stroke', theme.chartStyle.gridColor)
 
-    // Draw family connection lines
+    // Pre-create family connection line paths (all hidden initially during animation)
     families.forEach(family => {
       if (family.models.length < 2) return
 
-      const line = d3
-        .line<TimelineDataPoint>()
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.averageScore))
-        .curve(d3.curveMonotoneX)
-
-      const visibleModels = currentDate
-        ? family.models.filter(m => m.date <= currentDate)
-        : family.models
-
-      if (visibleModels.length < 2) return
-
-      const path = g
-        .append('path')
-        .datum(visibleModels)
+      g.append('path')
+        .attr('class', `family-line family-${family.name.replace(/\s+/g, '-')}`)
         .attr('fill', 'none')
         .attr('stroke', family.color)
         .attr('stroke-width', isMobile ? 1.5 : 2)
         .attr('stroke-opacity', 0.3)
-        .attr('d', line)
-
-      // Animate line drawing
-      const totalLength = (path.node() as SVGPathElement).getTotalLength()
-      path
-        .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
-        .attr('stroke-dashoffset', totalLength)
-        .transition()
-        .duration(750)
-        .ease(d3.easeLinear)
-        .attr('stroke-dashoffset', 0)
+        .datum(family)
     })
 
-    // Draw model dots
-    const visibleData = currentDate
-      ? timelineData.filter(d => d.date <= currentDate)
-      : timelineData
-
-    const dots = g
-      .selectAll('.model-dot')
-      .data(visibleData)
+    // Pre-create ALL model dots (initially hidden with r=0)
+    g.selectAll('.model-dot')
+      .data(timelineData, (d: unknown) => (d as TimelineDataPoint).model.id)
       .enter()
       .append('circle')
       .attr('class', 'model-dot')
@@ -257,7 +290,7 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
       .attr('fill', d => getProviderColorFromTheme(d.model.provider, theme))
       .attr('stroke', theme.colors.surface)
       .attr('stroke-width', isMobile ? 1.5 : 2)
-      .attr('opacity', 0.85)
+      .attr('opacity', 0)
       .style('cursor', 'pointer')
       .on('mouseenter', function (event, d) {
         d3.select(this)
@@ -296,13 +329,19 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
         setTooltip(null)
       })
 
-    // Animate dots appearing
-    dots
-      .transition()
-      .duration(500)
-      .delay((_d, i) => i * 30)
-      .attr('r', d => (d.parameterSize ? sizeScale(d.parameterSize) : isMobile ? 6 : 8))
-  }, [models, dimensions, currentDate, theme])
+    // Store scene refs for incremental updates
+    sceneRef.current = { timelineData, families, xScale, yScale, sizeScale, isMobile, g }
+
+    // Show initial state (all dots visible if no animation date, or filtered if mid-animation)
+    // We call updateVisibility via a microtask so sceneRef is set first
+    const initialDate = currentDateRef.current
+    requestAnimationFrame(() => updateVisibility(initialDate))
+  }, [models, dimensions, theme, updateVisibility])
+
+  // Run visibility update whenever currentDate changes (cheap — no SVG rebuild)
+  useEffect(() => {
+    updateVisibility(currentDate)
+  }, [currentDate, updateVisibility])
 
   const handlePlayPause = () => {
     if (!isPlaying) {

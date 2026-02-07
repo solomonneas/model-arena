@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Model } from '@/types/model'
+import { Model, BenchmarkKey } from '@/types/model'
 import BarChart from '@/components/BarChart'
 import { VariantTheme, defaultTheme } from '@/types/theme'
 import { BENCHMARK_OPTIONS } from '@/data/constants'
@@ -12,7 +12,7 @@ interface BarChartViewProps {
 const models: Model[] = modelsData.models
 
 function BarChartView({ theme = defaultTheme }: BarChartViewProps) {
-  const [selectedBenchmark, setSelectedBenchmark] = useState('MMLU')
+  const [selectedBenchmark, setSelectedBenchmark] = useState<BenchmarkKey>('MMLU')
 
   return (
     <div className="space-y-6">
@@ -24,7 +24,7 @@ function BarChartView({ theme = defaultTheme }: BarChartViewProps) {
           </h2>
           <select
             value={selectedBenchmark}
-            onChange={(e) => setSelectedBenchmark(e.target.value)}
+            onChange={(e) => setSelectedBenchmark(e.target.value as BenchmarkKey)}
             className="px-3 py-1.5 rounded text-sm"
             style={{
               borderColor: theme.colors.border,

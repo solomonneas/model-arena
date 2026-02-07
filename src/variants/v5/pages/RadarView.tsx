@@ -120,7 +120,7 @@ function RadarView() {
                       </div>
                     </div>
                     <div className="grid grid-cols-5 gap-1">
-                      {['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'].map(key => (
+                      {(['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'] as const).map(key => (
                         <div key={key} className="text-center">
                           <div style={{ fontFamily: "'Caveat', cursive", fontSize: '0.65rem', color: '#B8A88A' }}>
                             {key.length > 4 ? key.substring(0, 4) : key}

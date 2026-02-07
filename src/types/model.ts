@@ -1,6 +1,6 @@
 export type BenchmarkKey = 'MMLU' | 'HumanEval' | 'MATH' | 'GSM8K' | 'GPQA' | 'HellaSwag' | 'ARC' | 'TruthfulQA';
 
-export type ModelBenchmarks = Record<BenchmarkKey, number> & Record<string, number>;
+export type ModelBenchmarks = Record<BenchmarkKey, number>;
 
 export interface ModelPricing {
   input: number;  // per million tokens

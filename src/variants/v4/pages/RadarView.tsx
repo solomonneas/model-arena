@@ -119,7 +119,7 @@ function RadarView() {
                         </div>
                       </div>
                       <div className="grid grid-cols-5 gap-1">
-                        {['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'].map(key => (
+                        {(['MMLU', 'HumanEval', 'MATH', 'GSM8K', 'GPQA'] as const).map(key => (
                           <div key={key} className="text-center">
                             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.55rem', color: '#475569' }}>{key.substring(0, 4)}</div>
                             <div className={`${getScoreTier(model.benchmarks[key])}`} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.7rem' }}>
