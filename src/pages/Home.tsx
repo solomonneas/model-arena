@@ -1,14 +1,8 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Model } from '@/types/model'
-import modelsData from '../../data/models.json'
+import { useModels } from '@/hooks/useModels'
 
 function Home() {
-  const [models, setModels] = useState<Model[]>([])
-
-  useEffect(() => {
-    setModels(modelsData.models)
-  }, [])
+  const { models, providerCount, maxContext } = useModels()
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -113,7 +107,7 @@ function Home() {
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-primary-600 mb-2">
-            {new Set(models.map(m => m.provider)).size}
+            {providerCount}
           </div>
           <div className="text-gray-600">Providers</div>
         </div>
@@ -123,7 +117,7 @@ function Home() {
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-primary-600 mb-2">
-            {Math.max(...models.map(m => m.context_window)) / 1000}K
+            {maxContext / 1000}K
           </div>
           <div className="text-gray-600">Max Context</div>
         </div>

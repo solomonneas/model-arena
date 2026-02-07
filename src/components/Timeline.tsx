@@ -8,6 +8,7 @@ import {
 } from '@/utils/timeline'
 import { formatDate } from '@/utils/formatters'
 import { VariantTheme, defaultTheme } from '@/types/theme'
+import { useResizeObserver } from '@/hooks/useResizeObserver'
 
 interface TimelineProps {
   models: Model[]
@@ -46,22 +47,14 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
     g: d3.Selection<SVGGElement, unknown, null, undefined>
   } | null>(null)
 
-  // Handle responsive sizing
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth
-        const isMobile = window.innerWidth < 768
-        const newWidth = Math.min(containerWidth, isMobile ? 700 : 1200)
-        const newHeight = isMobile ? 500 : 600
-        setDimensions({ width: newWidth, height: newHeight })
-      }
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  // Handle responsive sizing via ResizeObserver
+  useResizeObserver(containerRef, (entry) => {
+    const containerWidth = entry.contentRect.width
+    const isMobile = containerWidth < 768
+    const newWidth = Math.min(containerWidth, isMobile ? 700 : 1200)
+    const newHeight = isMobile ? 500 : 600
+    setDimensions({ width: newWidth, height: newHeight })
+  })
 
   // Animation loop — uses ref to avoid triggering D3 rebuild
   const currentDateRef = useRef<Date | null>(null)
@@ -165,7 +158,7 @@ function Timeline({ models, width = 1200, height = 600, theme = defaultTheme }: 
     svg.selectAll('*').remove()
 
     const { width: currentWidth, height: currentHeight } = dimensions
-    const isMobile = window.innerWidth < 768
+    const isMobile = currentWidth < 768
     const margin = isMobile
       ? { top: 40, right: 40, bottom: 60, left: 60 }
       : { top: 60, right: 80, bottom: 80, left: 80 }

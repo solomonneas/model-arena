@@ -5,6 +5,7 @@ import { parseParameters } from '@/utils/timeline'
 import { formatPrice } from '@/utils/formatters'
 import { VariantTheme, defaultTheme } from '@/types/theme'
 import { BENCHMARK_OPTIONS } from '@/data/constants'
+import { useResizeObserver } from '@/hooks/useResizeObserver'
 
 interface ScatterPlotProps {
   models: Model[]
@@ -36,22 +37,14 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
   } | null>(null)
   const [dimensions, setDimensions] = useState({ width, height })
 
-  // Handle responsive sizing
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth
-        const isMobile = window.innerWidth < 640
-        const newWidth = Math.min(containerWidth, isMobile ? containerWidth : 1000)
-        const newHeight = isMobile ? 400 : 600
-        setDimensions({ width: newWidth, height: newHeight })
-      }
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  // Handle responsive sizing via ResizeObserver
+  useResizeObserver(containerRef, (entry) => {
+    const containerWidth = entry.contentRect.width
+    const isMobile = containerWidth < 640
+    const newWidth = Math.min(containerWidth, isMobile ? containerWidth : 1000)
+    const newHeight = isMobile ? 400 : 600
+    setDimensions({ width: newWidth, height: newHeight })
+  })
 
   useEffect(() => {
     if (!svgRef.current || models.length === 0) return
@@ -60,7 +53,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
     svg.selectAll('*').remove()
 
     const { width: currentWidth, height: currentHeight } = dimensions
-    const isMobile = window.innerWidth < 640
+    const isMobile = currentWidth < 640
     const margin = isMobile
       ? { top: 20, right: 20, bottom: 60, left: 60 }
       : { top: 40, right: 40, bottom: 80, left: 80 }
@@ -281,7 +274,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
       .transition()
       .duration(800)
       .delay((_, i) => i * 20)
-      .attr('r', (d: any) => d.parameterSize ? sizeScale(d.parameterSize) : 8)
+      .attr('r', (d: ScatterDataPoint) => d.parameterSize ? sizeScale(d.parameterSize) : 8)
 
     // Tooltip handling via React state (no D3 .html() to avoid XSS)
     dots
@@ -308,7 +301,7 @@ function ScatterPlot({ models, width = 800, height = 600, theme = defaultTheme }
           .duration(200)
           .attr('opacity', 0.8)
           .attr('stroke-width', 2)
-          .attr('r', (d: any) => d.parameterSize ? sizeScale(d.parameterSize) : 8)
+          .attr('r', (d: ScatterDataPoint) => d.parameterSize ? sizeScale(d.parameterSize) : 8)
 
         setHoveredPoint(null)
       })

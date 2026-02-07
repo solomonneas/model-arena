@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import { Model } from '@/types/model'
 import { VariantTheme, defaultTheme } from '@/types/theme'
 import { RADAR_AXES, DEFAULT_MODEL_COLORS } from '@/data/constants'
+import { useResizeObserver } from '@/hooks/useResizeObserver'
 
 interface RadarChartProps {
   models: Model[]
@@ -31,21 +32,13 @@ function RadarChart({ models, width = 600, height = 600, theme = defaultTheme }:
     [models, theme.colors.providerColors]
   )
 
-  // Handle responsive sizing
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth
-        const isMobile = window.innerWidth < 640
-        const newSize = Math.min(containerWidth, isMobile ? 400 : 700)
-        setDimensions({ width: newSize, height: newSize })
-      }
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  // Handle responsive sizing via ResizeObserver
+  useResizeObserver(containerRef, (entry) => {
+    const containerWidth = entry.contentRect.width
+    const isMobile = containerWidth < 640
+    const newSize = Math.min(containerWidth, isMobile ? 400 : 700)
+    setDimensions({ width: newSize, height: newSize })
+  })
 
   useEffect(() => {
     if (!svgRef.current || models.length === 0) return
@@ -54,7 +47,7 @@ function RadarChart({ models, width = 600, height = 600, theme = defaultTheme }:
     svg.selectAll('*').remove()
 
     const { width: currentWidth, height: currentHeight } = dimensions
-    const isMobile = window.innerWidth < 640
+    const isMobile = currentWidth < 640
     const margin = isMobile
       ? { top: 60, right: 60, bottom: 60, left: 60 }
       : { top: 80, right: 80, bottom: 80, left: 80 }

@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import { Model, BenchmarkKey } from '@/types/model'
 import { VariantTheme, defaultTheme } from '@/types/theme'
 import { BENCHMARK_OPTIONS } from '@/data/constants'
+import { useResizeObserver } from '@/hooks/useResizeObserver'
 
 interface BarChartProps {
   models: Model[]
@@ -41,20 +42,14 @@ function BarChart({
   const [dimensions, setDimensions] = useState({ width, height })
   const [, setHoveredBar] = useState<string | null>(null)
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth
-        const isMobile = window.innerWidth < 640
-        const newWidth = Math.min(containerWidth, isMobile ? containerWidth : 1000)
-        const newHeight = isMobile ? 400 : Math.max(350, maxModels * 28 + 80)
-        setDimensions({ width: newWidth, height: newHeight })
-      }
-    }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [maxModels])
+  // Handle responsive sizing via ResizeObserver
+  useResizeObserver(containerRef, (entry) => {
+    const containerWidth = entry.contentRect.width
+    const isMobile = containerWidth < 640
+    const newWidth = Math.min(containerWidth, isMobile ? containerWidth : 1000)
+    const newHeight = isMobile ? 400 : Math.max(350, maxModels * 28 + 80)
+    setDimensions({ width: newWidth, height: newHeight })
+  })
 
   useEffect(() => {
     if (!svgRef.current || models.length === 0) return
@@ -63,7 +58,7 @@ function BarChart({
     svg.selectAll('*').remove()
 
     const { width: w, height: h } = dimensions
-    const isMobile = window.innerWidth < 640
+    const isMobile = w < 640
     const margin = isMobile
       ? { top: 20, right: 50, bottom: 30, left: 120 }
       : { top: 20, right: 60, bottom: 40, left: 160 }
